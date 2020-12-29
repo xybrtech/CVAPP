@@ -50,90 +50,20 @@ class _FormState extends State<CVForm> {
   Widget build(BuildContext context) {
     return new Scaffold(
         body: Container(
-            padding:
-                const EdgeInsets.symmetric(vertical: 16.0, horizontal: 16.0),
+            padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 16.0),
             child: Builder(
                 builder: (context) => Form(
                     key: _form,
-                    child: ListView(
-                        //crossAxisAlignment: CrossAxisAlignment.stretch,
+                    child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
-                          TextFormField(
-                              decoration:
-                                  InputDecoration(labelText: 'First name'),
-                              validator: (value) {
-                                if (value.isEmpty) {
-                                  return 'Please enter your first name';
-                                }
+                          //crossAxisAlignment: CrossAxisAlignment.stretch,
 
-                                return null;
-                              },
-                              onFieldSubmitted: (_) {
-                                FocusScope.of(context)
-                                    .requestFocus(_lastnameFocusNode);
-                              },
-                              onSaved: (value) {
-                                _user = User(
-                                  pK: _user.pK,
-                                  firstname: _user.firstname,
-                                  lastname: value,
-                                );
-                              }),
-                          TextFormField(
-                            decoration: InputDecoration(labelText: 'Last name'),
-                            focusNode: _lastnameFocusNode,
-                            validator: (value) {
-                              if (value.isEmpty) {
-                                return 'Please enter your last name';
-                              }
-                              return null;
-                            },
-                            keyboardType: TextInputType.name,
-                            onFieldSubmitted: (_) {
-                              FocusScope.of(context)
-                                  .requestFocus(_emailFocusNode);
-                            },
-                            onSaved: (value) {
-                              _user = User(
-                                pK: _user.pK,
-                                firstname: _user.firstname,
-                                lastname: value,
-                              );
-                            },
-                          ),
-                          /* TextFormField(
-                              decoration:
-                              InputDecoration(labelText: 'Last name'),
-                              validator: (value) {
-                                if (value.isEmpty) {
-                                  return 'Please enter your last name.';
-                                }
-                              },
-                              onSaved: (val) =>
-                                  setState(() => _user.lastName = val)),*/
-                          TextFormField(
-                            decoration: InputDecoration(labelText: 'Email'),
-                            focusNode: _emailFocusNode,
-                            /* validator: (value) => EmailValidator.validate(value)
-                                ? null
-                                : "Please enter a valid email",
-                          ) */
-                          ),
-
-                          Container(
+                          /* Container(
                             padding: const EdgeInsets.fromLTRB(0, 50, 0, 20),
                             // child: Text('Vaccine Maker'),
-                          ),
+                          ) */
                           VaccineMaker(),
-                          /*SwitchListTile(
-                              title: const Text('Monthly Newsletter'),
-                              value: _user.newsletter,
-                              onChanged: (bool val) =>
-                                  setState(() => _user.newsletter = val))*/
-                          //Container(
-                          // padding: const EdgeInsets.fromLTRB(0, 50, 0, 20),
-                          //child: Text('Interests'),
-                          //),
                           SimpleGroupedCheckbox<int>(
                             //key: checkboxKey,
                             itemsTitle: ["1st Dose", "2nd Dose"],
@@ -142,7 +72,6 @@ class _FormState extends State<CVForm> {
                             checkFirstElement: false,
                             multiSelection: false,
                           ),
-
                           DateTimePicker(
                             type: DateTimePickerType.dateTimeSeparate,
                             dateMask: 'd MMM, yyyy',
@@ -172,7 +101,6 @@ class _FormState extends State<CVForm> {
                               itemsTitle: ["I Agree - Terms and Conditions"],
                               values: [1],
                               activeColor: MaterialColors.primary),
-
                           Container(
                               padding: const EdgeInsets.symmetric(
                                   vertical: 16.0, horizontal: 16.0),

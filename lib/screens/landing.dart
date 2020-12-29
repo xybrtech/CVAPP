@@ -1,5 +1,6 @@
 import 'package:COVAPP/constants/theme.dart';
 import 'package:COVAPP/screens/form.dart';
+import 'package:COVAPP/screens/register.dart';
 
 import 'package:COVAPP/widgets/navbar.dart';
 import 'package:COVAPP/widgets/sidemenu.dart';
@@ -11,6 +12,25 @@ class Landing extends StatefulWidget {
 }
 
 class _LandingState extends State<Landing> {
+  bool isUserRegistered = true;
+
+  final _form = GlobalKey<FormState>();
+
+  void _saveForm() {
+    //final isValid = _form.currentState.validate();
+    //Provider.of<Users>(context, listen: false).addUser();
+
+    /* setState(() {
+      isUserRegistered = false;
+
+      print('Set state $isUserRegistered');
+    }); */
+
+    //if (!isValid) {
+    //return;
+    //}
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -24,7 +44,10 @@ class _LandingState extends State<Landing> {
         backgroundColor: MaterialColors.primary,
         // key: _scaffoldKey,
         drawer: SideMenu(currentPage: "Home"),
-        body: Container(color: MaterialColors.white, child: CVForm()
+        body: Container(
+            color: MaterialColors.white,
+            child: isUserRegistered ? CVForm() : Register(_saveForm)
+
             //History()
             ));
   }

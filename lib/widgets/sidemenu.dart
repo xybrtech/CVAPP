@@ -104,7 +104,7 @@ class SideMenu extends StatelessWidget {
                 icon: Icons.qr_code_scanner,
                 onTap: () {
                   if (currentPage != "signout")
-                    Navigator.pushReplacementNamed(context, '/onboarding');
+                    Navigator.pushReplacementNamed(context, '/landing');
                 },
                 iconColor: Colors.black,
                 title: "Sign out",
