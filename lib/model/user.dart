@@ -1,4 +1,7 @@
+import 'dart:convert';
+
 import 'package:flutter/foundation.dart';
+import 'package:http/http.dart' as http;
 
 /*
 {
@@ -64,6 +67,19 @@ class User with ChangeNotifier {
 
   void toggleFavoriteStatus() {
     //isFavorite = !isFavorite;
+    notifyListeners();
+  }
+
+  void addUser() {
+    const url = "https://covapp-e1142-default-rtdb.firebaseio.com/users.json";
+
+    http.post(url,
+        body: json
+            .encode({'firstname': 'Pavan', 'lastname': 'Guduru', 'id': '1'}));
+
+    //final newUser =
+    //  new User(pK: 'Guduru', firstname: 'Pavan', lastname: 'Guduru');
+
     notifyListeners();
   }
 }

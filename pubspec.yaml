@@ -31,6 +31,7 @@ dependencies:
   email_validator: '^1.0.0'
   checkbox_grouped: ^0.6.0+1
   http: ^0.12.2
+  provider: ^4.3.2+3
 
 
   # The following adds the Cupertino Icons font to your application.
