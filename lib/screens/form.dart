@@ -1,16 +1,18 @@
 import 'package:COVAPP/constants/theme.dart';
 import 'package:COVAPP/model/user.dart';
-import 'package:COVAPP/providers/users.dart';
-import 'package:COVAPP/widgets/vaccinemakerdrop.dart';
+import 'package:COVAPP/model/vaccine.dart';
 import 'package:checkbox_grouped/checkbox_grouped.dart';
 import 'package:date_time_picker/date_time_picker.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 class CVForm extends StatefulWidget {
   @override
   _FormState createState() => _FormState();
+
+  final Function _saveVaccine;
+
+  CVForm(this._saveVaccine);
 }
 
 class _FormState extends State<CVForm> {
@@ -19,19 +21,42 @@ class _FormState extends State<CVForm> {
   final _lastnameFocusNode = FocusNode();
   final _emailFocusNode = FocusNode();
 
-  var _user = User(
-    pK: null,
-    firstname: '',
-    lastname: '',
-  );
+  DateTime _selectedDate;
+
+  var _user = User(pK: null, firstname: '', lastname: '', email: '');
+
+  var _vaccine = VaccineItem(
+      vaccinatedDate: DateTime.now(), maker: '', doseNum: 0, id: '');
 
   void _saveForm() {
     final isValid = _form.currentState.validate();
-    Provider.of<Users>(context, listen: false).addUser();
+
+    //Provider.of<Users>(context, listen: false).addUser();
+
+    print("DoseNum " + _vaccine.doseNum.toString());
+    print("Maker " + _vaccine.maker);
+    print("DoseNum " + _vaccine.id);
+    print("Date " + _vaccine.vaccinatedDate.toString());
+
+    widget._saveVaccine(_vaccine);
+
     if (!isValid) {
       return;
     }
   }
+/* 
+  void _addNewVaccine(String txTitle, double txAmount, DateTime chosenDate) {
+    final newTx = Vaccine(
+      vaccineMaker: txTitle,
+       virus: 'COVID',
+      : chosenDate,
+      id: DateTime.now().toString(),
+    );
+
+    setState(() {
+      _userTransactions.add(newTx);
+    });
+  } */
 
   @override
   void initState() {
@@ -63,7 +88,30 @@ class _FormState extends State<CVForm> {
                             padding: const EdgeInsets.fromLTRB(0, 50, 0, 20),
                             // child: Text('Vaccine Maker'),
                           ) */
-                          VaccineMaker(),
+                          DropdownSearch<String>(
+                            mode: Mode.MENU,
+                            showSelectedItem: true,
+                            items: [
+                              "Pfizer",
+                              "Moderna",
+                              "Glaxosmithkline (Disabled)",
+                              "Merck (Disabled)",
+                              'AstraZeneca (Disabled)',
+                              'Novavax (Disabled)'
+                            ],
+                            label: "Vaccine Maker",
+                            hint: "Pharma Company",
+                            popupItemDisabled: (String s) => s.startsWith('I'),
+                            onChanged: (value) {
+                              _vaccine = VaccineItem(
+                                  id: _vaccine.id,
+                                  maker: value,
+                                  doseNum: _vaccine.doseNum,
+                                  vaccinatedDate: _vaccine.vaccinatedDate);
+                            },
+                            selectedItem: "Pfizer",
+                          ),
+
                           SimpleGroupedCheckbox<int>(
                             //key: checkboxKey,
                             itemsTitle: ["1st Dose", "2nd Dose"],
@@ -71,6 +119,13 @@ class _FormState extends State<CVForm> {
                             activeColor: MaterialColors.primary,
                             checkFirstElement: false,
                             multiSelection: false,
+                            onItemSelected: (value) {
+                              _vaccine = VaccineItem(
+                                  id: _vaccine.id,
+                                  maker: _vaccine.maker,
+                                  doseNum: value,
+                                  vaccinatedDate: _vaccine.vaccinatedDate);
+                            },
                           ),
                           DateTimePicker(
                             type: DateTimePickerType.dateTimeSeparate,
@@ -89,12 +144,18 @@ class _FormState extends State<CVForm> {
 
                               return true;
                             },
-                            onChanged: (val) => print(val),
+                            // onChanged: (val) => print(val),
                             validator: (val) {
                               print(val);
                               return null;
                             },
-                            onSaved: (val) => print(val),
+                            onChanged: (val) {
+                              _vaccine = VaccineItem(
+                                  id: _vaccine.id,
+                                  maker: _vaccine.maker,
+                                  doseNum: _vaccine.doseNum,
+                                  vaccinatedDate: DateTime.parse(val));
+                            },
                           ),
                           SimpleGroupedCheckbox<int>(
                               //key: checkboxKey,

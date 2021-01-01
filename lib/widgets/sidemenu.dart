@@ -1,11 +1,20 @@
+import 'dart:convert';
+
 import 'package:COVAPP/constants/theme.dart';
+import 'package:COVAPP/providers/auth.dart';
 import 'package:COVAPP/widgets/sidemenutitle.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+import 'drawer-tile.dart';
 
 class SideMenu extends StatelessWidget {
   final String currentPage;
+  final String firstName;
+  final String lastName;
 
-  SideMenu({this.currentPage});
+  SideMenu({this.currentPage, this.firstName, this.lastName});
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +35,7 @@ class SideMenu extends StatelessWidget {
                 ),
                 Padding(
                   padding: const EdgeInsets.only(bottom: 8.0, top: 16.0),
-                  child: Text("Darryl Brown",
+                  child: Text('$firstName $lastName',
                       style: TextStyle(color: Colors.white, fontSize: 21)),
                 ),
                 Padding(
@@ -76,8 +85,8 @@ class SideMenu extends StatelessWidget {
             SideMenuTile(
                 icon: Icons.home,
                 onTap: () {
-                  if (currentPage != "Home")
-                    Navigator.pushReplacementNamed(context, '/home');
+                  //if (currentPage != "Home")
+                  Navigator.pushReplacementNamed(context, '/landing');
                 },
                 iconColor: Colors.black,
                 title: "Home",
@@ -103,86 +112,19 @@ class SideMenu extends StatelessWidget {
             SideMenuTile(
                 icon: Icons.qr_code_scanner,
                 onTap: () {
-                  if (currentPage != "signout")
-                    Navigator.pushReplacementNamed(context, '/landing');
+                  // Navigator.of(context).pop();
+                  Navigator.of(context).pushReplacementNamed('/landing');
+
+                  // Navigator.of(context)
+                  //     .pushReplacementNamed(UserProductsScreen.routeName);
+                  Provider.of<Auth>(context, listen: false).logout();
+
+                  //if (currentPage != "signout")
+                  // Navigator.pushReplacementNamed(context, '/landing');
                 },
                 iconColor: Colors.black,
                 title: "Sign out",
-                isSelected: currentPage == "signout" ? true : false)
-
-            /*,
-                    DrawerTile(
-                        icon: Icons.tag_faces,
-                        onTap: () {
-                          if (currentPage != "Man")
-                            Navigator.pushReplacementNamed(context, '/man');
-                        },
-                        iconColor: Colors.black,
-                        title: "Man",
-                        isSelected: currentPage == "Man" ? true : false),
-                    DrawerTile(
-                        icon: Icons.child_friendly,
-                        onTap: () {
-                          if (currentPage != "Kids")
-                            Navigator.pushReplacementNamed(context, '/kids');
-                        },
-                        iconColor: Colors.black,
-                        title: "Kids",
-                        isSelected: currentPage == "Kids" ? true : false),
-                    DrawerTile(
-                        icon: Icons.grain,
-                        onTap: () {
-                          if (currentPage != "New Collection")
-                            Navigator.pushReplacementNamed(context, '/newcollection');
-                        },
-                        iconColor: Colors.black,
-                        title: "New Collection",
-                        isSelected: currentPage == "New Collection" ? true : false),
-                    DrawerTile(
-                        icon: Icons.settings_input_component,
-                        onTap: () {
-                          if (currentPage != "Components")
-                            Navigator.pushReplacementNamed(context, '/components');
-                        },
-                        iconColor: Colors.black,
-                        title: "Components",
-                        isSelected: currentPage == "Components" ? true : false),
-                    DrawerTile(
-                        icon: Icons.account_circle,
-                        onTap: () {
-                          if (currentPage != "Profile")
-                            Navigator.pushReplacementNamed(context, '/profile');
-                        },
-                        iconColor: Colors.black,
-                        title: "Profile",
-                        isSelected: currentPage == "Profile" ? true : false),
-                    DrawerTile(
-                        icon: Icons.settings,
-                        onTap: () {
-                          if (currentPage != "Settings")
-                            Navigator.pushReplacementNamed(context, '/settings');
-                        },
-                        iconColor: Colors.black,
-                        title: "Settings",
-                        isSelected: currentPage == "Settings" ? true : false),
-                    DrawerTile(
-                        icon: Icons.exit_to_app,
-                        onTap: () {
-                          if (currentPage != "Sign In")
-                            Navigator.pushReplacementNamed(context, '/signin');
-                        },
-                        iconColor: Colors.black,
-                        title: "Sign In",
-                        isSelected: currentPage == "Sign In" ? true : false),
-                    DrawerTile(
-                        icon: Icons.open_in_browser,
-                        onTap: () {
-                          if (currentPage != "Sign Up")
-                            Navigator.pushReplacementNamed(context, '/signup');
-                        },
-                        iconColor: Colors.black,
-                        title: "Sign Up",
-                        isSelected: currentPage == "Sign Up" ? true : false),*/
+                isSelected: currentPage == "signout" ? true : false),
           ],
         ))
       ])),

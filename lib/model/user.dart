@@ -49,6 +49,8 @@ class User with ChangeNotifier {
   final String pK;
   final String firstname;
   final String lastname;
+
+  final String email;
   //final List<VaccineItem> vaccines;
   //final DateTime dateTime;
 
@@ -56,14 +58,15 @@ class User with ChangeNotifier {
   //final String imageUrl;
   //bool isFavorite;
 
-  User({
-    @required this.pK,
-    @required this.firstname,
-    @required this.lastname,
-    //@required this.price,
-    //@required this.imageUrl,
-    //this.isFavorite = false,
-  });
+  User(
+      {@required this.pK,
+      @required this.firstname,
+      @required this.lastname,
+      @required this.email
+      //@required this.price,
+      //@required this.imageUrl,
+      //this.isFavorite = false,
+      });
 
   void toggleFavoriteStatus() {
     //isFavorite = !isFavorite;

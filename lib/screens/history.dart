@@ -12,13 +12,6 @@ class History extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: Navbar(
-          bgColor: MaterialColors.primary,
-          title: "Home",
-          searchBar: false,
-          categoryOne: "Vaccine info",
-          categoryTwo: "Vaccine History",
-        ),
         backgroundColor: MaterialColors.primary,
         // key: _scaffoldKey,
         drawer: SideMenu(currentPage: "Home"),
@@ -26,15 +19,17 @@ class History extends StatelessWidget {
             color: MaterialColors.white,
             padding:
                 const EdgeInsets.symmetric(vertical: 16.0, horizontal: 16.0),
-            child: ListView(
-              children: [
-                Text("Darryl Brown",
-                    style:
-                        TextStyle(color: MaterialColors.primary, fontSize: 21)),
-                Text("Test User",
-                    style:
-                        TextStyle(color: MaterialColors.primary, fontSize: 21))
-              ],
-            )));
+            child: ListView.builder(
+                padding: const EdgeInsets.all(8),
+                itemCount: userVaccinehistory.length,
+                itemBuilder: (BuildContext context, int index) {
+                  return Container(
+                    height: 50,
+                    //color: Colors.amber[colorCodes[index]],
+                    child: Center(
+                        child:
+                            Text('Entry ${userVaccinehistory[index].doseNum}')),
+                  );
+                })));
   }
 }

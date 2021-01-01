@@ -1,18 +1,21 @@
 import 'package:COVAPP/constants/theme.dart';
 import 'package:COVAPP/model/user.dart';
+import 'package:COVAPP/providers/auth.dart';
 
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
-class Register extends StatelessWidget {
+class Register extends StatefulWidget {
+  final Function setUser;
+
   Register(this.setUser);
 
-  var _user = User(
-    pK: null,
-    firstname: '',
-    lastname: '',
-  );
+  @override
+  _RegisterState createState() => _RegisterState();
+}
 
-  final Function setUser;
+class _RegisterState extends State<Register> {
+  var _user = User(pK: null, firstname: '', lastname: '', email: '');
 
   final _form = GlobalKey<FormState>();
 
@@ -20,82 +23,99 @@ class Register extends StatelessWidget {
 
   final _emailFocusNode = FocusNode();
 
-  //bool flag = false;
+  void _submitData() {
+    _form.currentState.save();
+    // print('User Data>>>>' + _user.firstname);
+
+    widget.setUser(_user);
+    Provider.of<Auth>(context, listen: false)
+        .login(_user)
+        .then((value) => widget.setUser(_user));
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-        padding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 16.0),
-        child: Builder(
-            builder: (context) => Form(
-                key: _form,
-                child: ListView(
-                    //crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      TextFormField(
-                          decoration: InputDecoration(labelText: 'First name'),
-                          validator: (value) {
-                            if (value.isEmpty) {
-                              return 'Please enter your first name';
-                            }
+    return ChangeNotifierProvider(
+        create: (ctx) => Auth(),
+        child: Consumer<Auth>(
+            builder: (ctx, auth, _) => Container(
+                padding: const EdgeInsets.symmetric(
+                    vertical: 16.0, horizontal: 16.0),
+                child: Builder(
+                    builder: (context) => Form(
+                        key: _form,
+                        child: ListView(
+                            //crossAxisAlignment: CrossAxisAlignment.stretch,
+                            children: [
+                              TextFormField(
+                                  decoration:
+                                      InputDecoration(labelText: 'First name'),
+                                  validator: (value) {
+                                    if (value.isEmpty) {
+                                      return 'Please enter your first name';
+                                    }
 
-                            return null;
-                          },
-                          onFieldSubmitted: (_) {
-                            FocusScope.of(context)
-                                .requestFocus(_lastnameFocusNode);
-                          },
-                          onSaved: (value) {
-                            _user = User(
-                              pK: _user.pK,
-                              firstname: _user.firstname,
-                              lastname: value,
-                            );
-                          }),
-                      TextFormField(
-                        decoration: InputDecoration(labelText: 'Last name'),
-                        focusNode: _lastnameFocusNode,
-                        validator: (value) {
-                          if (value.isEmpty) {
-                            return 'Please enter your last name';
-                          }
-                          return null;
-                        },
-                        keyboardType: TextInputType.name,
-                        onFieldSubmitted: (_) {
-                          FocusScope.of(context).requestFocus(_emailFocusNode);
-                        },
-                        onSaved: (value) {
-                          _user = User(
-                            pK: _user.pK,
-                            firstname: _user.firstname,
-                            lastname: value,
-                          );
-                        },
-                      ),
-                      TextFormField(
-                        decoration: InputDecoration(labelText: 'Email'),
-                        focusNode: _emailFocusNode,
-                        /* validator: (value) => EmailValidator.validate(value)
+                                    return null;
+                                  },
+                                  onFieldSubmitted: (_) {
+                                    FocusScope.of(context)
+                                        .requestFocus(_lastnameFocusNode);
+                                  },
+                                  onSaved: (value) {
+                                    _user = User(
+                                        pK: _user.pK,
+                                        firstname: value,
+                                        lastname: _user.lastname,
+                                        email: _user.email);
+                                  }),
+                              TextFormField(
+                                decoration:
+                                    InputDecoration(labelText: 'Last name'),
+                                focusNode: _lastnameFocusNode,
+                                validator: (value) {
+                                  if (value.isEmpty) {
+                                    return 'Please enter your last name';
+                                  }
+                                  return null;
+                                },
+                                keyboardType: TextInputType.name,
+                                onFieldSubmitted: (_) {
+                                  FocusScope.of(context)
+                                      .requestFocus(_emailFocusNode);
+                                },
+                                onSaved: (value) {
+                                  print('Hello Pavan FName >.' + value);
+                                  _user = User(
+                                      pK: _user.pK,
+                                      firstname: _user.firstname,
+                                      lastname: value,
+                                      email: _user.email);
+                                },
+                              ),
+                              TextFormField(
+                                decoration: InputDecoration(labelText: 'Email'),
+                                focusNode: _emailFocusNode,
+                                /* validator: (value) => EmailValidator.validate(value)
                                 ? null
                                 : "Please enter a valid email",
                           ) */
-                      ),
-                      Container(
-                        padding: const EdgeInsets.fromLTRB(0, 50, 0, 20),
-                        // child: Text('Vaccine Maker'),
-                      ),
-                      Container(
-                          padding: const EdgeInsets.symmetric(
-                              vertical: 16.0, horizontal: 16.0),
-                          child: RaisedButton(
-                              color: MaterialColors.primary,
-                              onPressed: setUser(),
-                              child: Text('Save',
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.w600,
-                                      fontSize: 16.0,
-                                      color: Colors.white))))
-                    ]))));
+                              ),
+                              Container(
+                                padding:
+                                    const EdgeInsets.fromLTRB(0, 50, 0, 20),
+                                // child: Text('Vaccine Maker'),
+                              ),
+                              Container(
+                                  padding: const EdgeInsets.symmetric(
+                                      vertical: 16.0, horizontal: 16.0),
+                                  child: RaisedButton(
+                                      color: MaterialColors.primary,
+                                      onPressed: _submitData,
+                                      child: Text('Save',
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.w600,
+                                              fontSize: 16.0,
+                                              color: Colors.white))))
+                            ]))))));
   }
 }

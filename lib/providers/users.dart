@@ -17,4 +17,13 @@ class Users with ChangeNotifier {
 
     notifyListeners();
   }
+
+  List<String> getVaccines() {
+    const url = "https://covapp-e1142-default-rtdb.firebaseio.com/users.json";
+  }
+
+  //final newUser =
+  //  new User(pK: 'Guduru', firstname: 'Pavan', lastname: 'Guduru');
+
+  notifyListeners();
 }

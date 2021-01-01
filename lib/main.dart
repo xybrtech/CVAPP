@@ -1,11 +1,11 @@
-//import 'package:COVAPP/model/vaccine.dart';
-import 'package:COVAPP/model/user.dart';
 import 'package:COVAPP/providers/users.dart';
 import 'package:COVAPP/screens/barcode.dart';
 import 'package:COVAPP/screens/landing.dart';
 import 'package:COVAPP/screens/splash.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
+import 'providers/auth.dart';
 
 //import 'screens/history.dart';
 
@@ -20,8 +20,15 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (ctx) => Users(),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider.value(
+          value: Auth(),
+        ),
+        ChangeNotifierProvider.value(
+          value: Users(),
+        )
+      ],
       child: MaterialApp(
         title: 'COVAPP',
         initialRoute: "/splash",
