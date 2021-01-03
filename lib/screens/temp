@@ -1,0 +1,15 @@
+Row(
+                            children: [
+                              Checkbox(
+                                  value: agree,
+                                  onChanged: (value) {
+                                    setState(() {
+                                      agree = value;
+                                    });
+                                  }),
+                              Text(
+                                'I have read and accept terms and conditions',
+                                overflow: TextOverflow.ellipsis,
+                              )
+                            ],
+                          ),

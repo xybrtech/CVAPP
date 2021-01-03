@@ -1,11 +1,14 @@
 import 'package:COVAPP/providers/users.dart';
 import 'package:COVAPP/screens/barcode.dart';
-import 'package:COVAPP/screens/landing.dart';
+
+import 'package:COVAPP/screens/landingNew.dart';
 import 'package:COVAPP/screens/splash.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'providers/auth.dart';
+import 'providers/authold.dart';
+import 'providers/vaccineitems.dart';
+import 'screens/history.dart';
 
 //import 'screens/history.dart';
 
@@ -27,7 +30,10 @@ class MyApp extends StatelessWidget {
         ),
         ChangeNotifierProvider.value(
           value: Users(),
-        )
+        ),
+        ChangeNotifierProvider.value(
+          value: VaccineItems(),
+        ),
       ],
       child: MaterialApp(
         title: 'COVAPP',
@@ -37,7 +43,7 @@ class MyApp extends StatelessWidget {
           "/splash": (BuildContext context) => new Splash(),
           "/landing": (BuildContext context) => new Landing(),
           "/barcode": (BuildContext context) => new Barcode(),
-          //"/history": (BuildContext context) => new History(_vaccineItems),
+          "/history": (BuildContext context) => new History(),
         },
         theme: ThemeData(
           // This is the theme of your application.

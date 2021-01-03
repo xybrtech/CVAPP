@@ -1,6 +1,8 @@
 import 'package:COVAPP/constants/theme.dart';
 import 'package:COVAPP/model/user.dart';
-import 'package:COVAPP/model/vaccine.dart';
+import 'package:COVAPP/providers/vaccineitem.dart';
+
+import '../providers/vaccineitems.dart';
 import 'package:checkbox_grouped/checkbox_grouped.dart';
 import 'package:date_time_picker/date_time_picker.dart';
 import 'package:dropdown_search/dropdown_search.dart';
@@ -22,6 +24,8 @@ class _FormState extends State<CVForm> {
   final _emailFocusNode = FocusNode();
 
   DateTime _selectedDate;
+
+  bool agree = false;
 
   var _user = User(pK: null, firstname: '', lastname: '', email: '');
 
@@ -79,9 +83,11 @@ class _FormState extends State<CVForm> {
             child: Builder(
                 builder: (context) => Form(
                     key: _form,
-                    child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
+                    child: Expanded(
+                        child: ListView(
+
+                            //mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
                           //crossAxisAlignment: CrossAxisAlignment.stretch,
 
                           /* Container(
@@ -138,16 +144,11 @@ class _FormState extends State<CVForm> {
                             timeLabelText: "Hour",
                             selectableDayPredicate: (date) {
                               // Disable weekend days to select from the calendar
-                              if (date.weekday == 6 || date.weekday == 7) {
+                              if (date.weekday == 0 || date.weekday == 0) {
                                 return false;
                               }
 
                               return true;
-                            },
-                            // onChanged: (val) => print(val),
-                            validator: (val) {
-                              print(val);
-                              return null;
                             },
                             onChanged: (val) {
                               _vaccine = VaccineItem(
@@ -157,22 +158,33 @@ class _FormState extends State<CVForm> {
                                   vaccinatedDate: DateTime.parse(val));
                             },
                           ),
-                          SimpleGroupedCheckbox<int>(
-                              //key: checkboxKey,
-                              itemsTitle: ["I Agree - Terms and Conditions"],
-                              values: [1],
-                              activeColor: MaterialColors.primary),
+                          Row(
+                            children: [
+                              Checkbox(
+                                  value: agree,
+                                  onChanged: (value) {
+                                    setState(() {
+                                      agree = value;
+                                    });
+                                  }),
+                              Text(
+                                'I have read and accept terms and conditions',
+                                overflow: TextOverflow.ellipsis,
+                              )
+                            ],
+                          ),
+
                           Container(
                               padding: const EdgeInsets.symmetric(
                                   vertical: 16.0, horizontal: 16.0),
                               child: RaisedButton(
                                   color: MaterialColors.primary,
-                                  onPressed: _saveForm,
+                                  onPressed: agree ? _saveForm : null,
                                   child: Text('Save',
                                       style: TextStyle(
                                           fontWeight: FontWeight.w600,
                                           fontSize: 16.0,
                                           color: Colors.white)))),
-                        ])))));
+                        ]))))));
   }
 }

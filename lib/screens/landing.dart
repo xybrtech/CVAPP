@@ -2,9 +2,11 @@ import 'dart:convert';
 
 import 'package:COVAPP/constants/theme.dart';
 import 'package:COVAPP/model/user.dart';
-import 'package:COVAPP/model/vaccine.dart';
-import 'package:COVAPP/providers/auth.dart';
+
+import 'package:COVAPP/providers/authold.dart';
 import 'package:COVAPP/providers/session.dart';
+import 'package:COVAPP/providers/vaccineitem.dart';
+
 import 'package:COVAPP/screens/form.dart';
 import 'package:COVAPP/screens/history.dart';
 import 'package:COVAPP/screens/register.dart';
@@ -14,19 +16,19 @@ import 'package:COVAPP/widgets/sidemenu.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class Landing extends StatefulWidget {
+class Landing2 extends StatefulWidget {
   @override
   _LandingState createState() => _LandingState();
 }
 
-class _LandingState extends State<Landing> {
+class _LandingState extends State<Landing2> {
   bool isUserRegistered = false;
   bool _vaccineinfoEntered = false;
 
   String _firstName = '';
   String _lastName = '';
-  Vaccine _vaccine =
-      new Vaccine(vaccineMaker: null, virus: null, vaccineItems: []);
+  //Vaccine _vaccine =
+  //  new Vaccine(vaccineMaker: null, virus: null, vaccineItems: []);
   final List<VaccineItem> _vtList = [];
 
   void _saveForm(User usr) {
@@ -64,11 +66,11 @@ class _LandingState extends State<Landing> {
       _vtList.add(new VaccineItem(
           id: '',
           maker: vac.maker,
+/* 
+      _vaccine = new Vaccine(
+          vaccineMaker: vac.maker, virus: 'COVID', vaccineItems: _vtList); */
           doseNum: vac.doseNum,
           vaccinatedDate: vac.vaccinatedDate));
-
-      _vaccine = new Vaccine(
-          vaccineMaker: vac.maker, virus: 'COVID', vaccineItems: _vtList);
 
       _vaccineinfoEntered = true;
     });
@@ -83,12 +85,6 @@ class _LandingState extends State<Landing> {
     pref.getUserData().then((result) {
       // If we need to rebuild the widget with the resulting data,
       // make sure to use `setState`
-      setState(() {
-        //_result = result;
-
-        _firstName = 'Pavan';
-        _lastName = 'Guduru';
-      });
     });
 
     super.initState();
@@ -117,14 +113,15 @@ class _LandingState extends State<Landing> {
                 ),
                 body: Container(
                     color: MaterialColors.white,
-                    child: auth.isAuth
-                        ? (_vaccineinfoEntered
-                            ? History(_vtList)
-                            : (isUserRegistered
-                                ? CVForm(_saveVaccineInfo)
-                                : Register(_saveForm)))
-                        : Register(_saveForm)
-
+                    child: FutureBuilder(
+                        future: auth.tryAutoLogin(),
+                        builder: (ctx, authResultSnapshot) =>
+                            authResultSnapshot.connectionState ==
+                                    ConnectionState.waiting
+                                ? (_vaccineinfoEntered
+                                    ? History()
+                                    : CVForm(_saveVaccineInfo))
+                                : Register(_saveForm))
                     //History()
 
                     ))));

@@ -1,13 +1,8 @@
-import 'dart:convert';
-
 import 'package:COVAPP/constants/theme.dart';
-import 'package:COVAPP/providers/auth.dart';
+import 'package:COVAPP/providers/authold.dart';
 import 'package:COVAPP/widgets/sidemenutitle.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-
-import 'drawer-tile.dart';
 
 class SideMenu extends StatelessWidget {
   final String currentPage;
@@ -30,9 +25,9 @@ class SideMenu extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 CircleAvatar(
-                  backgroundImage: NetworkImage(
-                      "https://pixabay.com/images/id-3637425/?fit=crop&w=840&q=80"),
-                ),
+                    //  backgroundImage: NetworkImage(
+                    //   "https://pixabay.com/images/id-3637425/?fit=crop&w=840&q=80"),
+                    ),
                 Padding(
                   padding: const EdgeInsets.only(bottom: 8.0, top: 16.0),
                   child: Text('$firstName $lastName',
@@ -110,9 +105,17 @@ class SideMenu extends StatelessWidget {
                 title: "Bar Code",
                 isSelected: currentPage == "BarCode" ? true : false),
             SideMenuTile(
-                icon: Icons.qr_code_scanner,
-                onTap: () {
+                icon: Icons.logout,
+                onTap: () async {
                   // Navigator.of(context).pop();
+                  //if (currentPage != "signout")
+                  print('Hello logout');
+                  // Navigator.of(context)
+                  //     .pushReplacementNamed(UserProductsScreen.routeName);
+                  // await Provider.of<Auth>(context, listen: false).logout();
+                  //Navigator.of(context).pushReplacementNamed('/landing');
+
+                  Navigator.of(context).pop();
                   Navigator.of(context).pushReplacementNamed('/landing');
 
                   // Navigator.of(context)

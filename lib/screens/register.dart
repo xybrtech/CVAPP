@@ -1,6 +1,6 @@
 import 'package:COVAPP/constants/theme.dart';
 import 'package:COVAPP/model/user.dart';
-import 'package:COVAPP/providers/auth.dart';
+import 'package:COVAPP/providers/authold.dart';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
