@@ -22,11 +22,16 @@ class Landing extends StatefulWidget {
 class _LandingState extends State<Landing> {
   bool isUserRegistered = false;
 
+  List<bool> _isHighlighted = [true, false];
+
   bool _vaccineinfoEntered = false;
 
   String _firstName = '';
 
   String _lastName = '';
+
+  bool _toHistoryPage = false;
+  bool _toVaccineInfoPage = false;
 
 /*   Vaccine _vaccine =
       new Vaccine(vaccineMaker: null, virus: null, vaccineItems: []); */
@@ -60,6 +65,26 @@ class _LandingState extends State<Landing> {
     //});
   }
 
+  void _navigateHistory() {
+    setState(() {
+      _vaccineinfoEntered = false;
+      _toVaccineInfoPage = false;
+      _toHistoryPage = true;
+      _isHighlighted[1] = true;
+      _isHighlighted[0] = false;
+    });
+  }
+
+  void _navigateVaccineInfo() {
+    setState(() {
+      _toVaccineInfoPage = true;
+      _toHistoryPage = false;
+      _vaccineinfoEntered = false;
+      _isHighlighted[0] = true;
+      _isHighlighted[1] = false;
+    });
+  }
+
   Future<void> _saveVaccineInfo(VaccineItem vac) {
     print('in save vaccine info' + _vaccineinfoEntered.toString());
 
@@ -78,7 +103,11 @@ class _LandingState extends State<Landing> {
       //_vaccine = new Vaccine(
       //  vaccineMaker: vac.maker, virus: 'COVID', vaccineItems: _vtList);
 
+      _toHistoryPage = false;
+      _toVaccineInfoPage = false;
       _vaccineinfoEntered = true;
+      _isHighlighted[1] = true;
+      _isHighlighted[0] = false;
     });
   }
 
@@ -88,11 +117,17 @@ class _LandingState extends State<Landing> {
 
     _vaccineinfoEntered = false;
 
+    _toHistoryPage = false;
+
+    _isHighlighted[0] = true;
+    _isHighlighted[1] = false;
+
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+    List<bool> isHighlighted;
     return MultiProvider(
       providers: [
         ChangeNotifierProvider.value(
@@ -110,6 +145,9 @@ class _LandingState extends State<Landing> {
               searchBar: false,
               categoryOne: "Vaccine info",
               categoryTwo: "Vaccine History",
+              isHighlighted: _isHighlighted,
+              navigateHistory: _navigateHistory,
+              navigateVaccineInfo: _navigateVaccineInfo,
             ),
             backgroundColor: MaterialColors.primary,
             // key: _scaffoldKey,
@@ -121,17 +159,25 @@ class _LandingState extends State<Landing> {
             body: Container(
               color: MaterialColors.white,
               child: auth.isAuth
-                  ? _vaccineinfoEntered
-                      ? History()
-                      : CVForm(_saveVaccineInfo)
+                  ? _toVaccineInfoPage
+                      ? CVForm(_saveVaccineInfo)
+                      : _toHistoryPage
+                          ? History()
+                          : _vaccineinfoEntered
+                              ? History()
+                              : CVForm(_saveVaccineInfo)
                   : FutureBuilder(
                       future: auth.tryAutoLogin(),
                       builder: (ctx, authResultSnapshot) =>
                           authResultSnapshot.connectionState ==
                                   ConnectionState.waiting
-                              ? _vaccineinfoEntered
-                                  ? History()
-                                  : CVForm(_saveVaccineInfo)
+                              ? _toVaccineInfoPage
+                                  ? CVForm(_saveVaccineInfo)
+                                  : _toHistoryPage
+                                      ? History()
+                                      : _vaccineinfoEntered
+                                          ? History()
+                                          : CVForm(_saveVaccineInfo)
                               : Register(_saveForm),
                     ),
 

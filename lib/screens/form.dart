@@ -83,11 +83,10 @@ class _FormState extends State<CVForm> {
             child: Builder(
                 builder: (context) => Form(
                     key: _form,
-                    child: Expanded(
-                        child: ListView(
+                    child: ListView(
 
-                            //mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
+                        //mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
                           //crossAxisAlignment: CrossAxisAlignment.stretch,
 
                           /* Container(
@@ -168,9 +167,47 @@ class _FormState extends State<CVForm> {
                                     });
                                   }),
                               Text(
-                                'I have read and accept terms and conditions',
+                                'I have read and accept ',
                                 overflow: TextOverflow.ellipsis,
-                              )
+                              ),
+                              GestureDetector(
+                                  onTap: () {
+                                    // do what you need to do when "Click here" gets clicked
+                                    return showDialog(
+                                      context: context,
+                                      builder: (ctx) => AlertDialog(
+                                        title: Text('TERMS AND CONDITIONS'),
+                                        content: Text(
+                                          'By agreeing to the terms and conditions, the “User” is verifying that the information provided is correct and accurate.',
+                                        ),
+                                        actions: <Widget>[
+                                          FlatButton(
+                                            child: Text('Disagree'),
+                                            onPressed: () {
+                                              setState(() {
+                                                agree = false;
+                                              });
+                                              Navigator.of(ctx).pop(false);
+                                            },
+                                          ),
+                                          FlatButton(
+                                            child: Text('Agree'),
+                                            onPressed: () {
+                                              setState(() {
+                                                agree = true;
+                                              });
+                                              Navigator.of(ctx).pop(true);
+                                            },
+                                          ),
+                                        ],
+                                      ),
+                                    );
+                                  },
+                                  child: Text("terms and conditions",
+                                      style: new TextStyle(
+                                          color: Colors.blue,
+                                          decoration:
+                                              TextDecoration.underline))),
                             ],
                           ),
 
@@ -185,6 +222,6 @@ class _FormState extends State<CVForm> {
                                           fontWeight: FontWeight.w600,
                                           fontSize: 16.0,
                                           color: Colors.white)))),
-                        ]))))));
+                        ])))));
   }
 }

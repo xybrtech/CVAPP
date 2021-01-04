@@ -33,7 +33,7 @@ class VaccineItemSW extends StatelessWidget {
           builder: (ctx) => AlertDialog(
             title: Text('Are you sure?'),
             content: Text(
-              'Do you want to remove the item from the cart?',
+              'You want to remove the vaccine info previously entered?',
             ),
             actions: <Widget>[
               FlatButton(

@@ -26,11 +26,16 @@ class Navbar extends StatefulWidget implements PreferredSizeWidget {
   final bool searchAutofocus;
   final bool noShadow;
   final Color bgColor;
+  final Function navigateHistory;
+  final Function navigateVaccineInfo;
+  final List<bool> isHighlighted;
 
   Navbar(
       {this.title = "Home",
       this.categoryOne = "",
       this.categoryTwo = "",
+      this.navigateHistory,
+      this.navigateVaccineInfo,
       this.tags,
       this.transparent = false,
       this.rightOptions = true,
@@ -42,6 +47,7 @@ class Navbar extends StatefulWidget implements PreferredSizeWidget {
       this.backButton = false,
       this.noShadow = false,
       this.bgColor = Colors.white,
+      this.isHighlighted,
       this.searchBar = false});
 
   final double _prefferedHeight = 180.0;
@@ -179,19 +185,26 @@ class _NavbarState extends State<Navbar> {
                             SizedBox(width: 10),
                             new GestureDetector(
                               onTap: () {
-                                Navigator.pushNamed(context, "/landing");
+                                // Navigator.pushNamed(context, "/landing");
+                                widget.navigateVaccineInfo();
                               },
-                              child: Text(widget.categoryOne,
-                                  style: TextStyle(
-                                      color: MaterialColors.white,
-                                      fontSize: 16.0)),
+                              child: widget.isHighlighted[0]
+                                  ? Text(widget.categoryOne,
+                                      style: TextStyle(
+                                          color: MaterialColors.white,
+                                          //fontWeight: FontWeight.w700,
+                                          fontSize: 20.0))
+                                  : Text(widget.categoryOne,
+                                      style: TextStyle(
+                                          color: MaterialColors.white,
+                                          fontSize: 16.0)),
                             )
                           ],
                         ),
                       ),
                       SizedBox(width: 30),
                       Container(
-                        color: MaterialColors.muted,
+                        color: MaterialColors.white,
                         height: 25,
                         width: 0.3,
                       ),
@@ -210,12 +223,20 @@ class _NavbarState extends State<Navbar> {
                             SizedBox(width: 10),
                             new GestureDetector(
                               onTap: () {
-                                Navigator.pushNamed(context, "/history");
+                                // Navigator.pushNamed(context, "/history");
+
+                                widget.navigateHistory();
                               },
-                              child: Text(widget.categoryTwo,
-                                  style: TextStyle(
-                                      color: MaterialColors.white,
-                                      fontSize: 16.0)),
+                              child: widget.isHighlighted[1]
+                                  ? Text(widget.categoryTwo,
+                                      style: TextStyle(
+                                          color: MaterialColors.white,
+                                          //fontWeight: FontWeight.w700,
+                                          fontSize: 20.0))
+                                  : Text(widget.categoryTwo,
+                                      style: TextStyle(
+                                          color: MaterialColors.white,
+                                          fontSize: 16.0)),
                             ),
                           ],
                         ),
