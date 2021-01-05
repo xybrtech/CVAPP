@@ -1,21 +1,45 @@
 import 'dart:convert';
 
+import 'package:COVAPP/constants/theme.dart';
+import 'package:COVAPP/model/user.dart';
 import 'package:flutter/material.dart';
 
 import 'package:http/http.dart' as http;
 
 class Users with ChangeNotifier {
-  void addUser() {
-    const url = "https://covapp-e1142-default-rtdb.firebaseio.com/users.json";
+  Future<String> addUser(User user) async {
+    const url = Config.url;
+    const key = Config.key;
 
-    http.post(url,
-        body: json
-            .encode({'firstname': 'Pavan', 'lastname': 'Guduru', 'id': '1'}));
+    try {
+      http.Response res = await http.post(url,
+          headers: {
+            "x-api-key": key,
+            "Authorization": "Api Token",
+            "CVAPPApi-Key": key
+          },
+          body: json.encode({
+            "TableName": "CVAPP",
+            "Item": {
+              "pk": user.email,
+              "rtype": "User",
+              "firstName": user.firstname,
+              "lastName": user.lastname
+            }
+          }));
 
-    //final newUser =
-    //  new User(pK: 'Guduru', firstname: 'Pavan', lastname: 'Guduru');
+      if (res.statusCode != 200) {
+        print('User already exists');
+      }
 
-    notifyListeners();
+      return res.statusCode.toString();
+    } catch (_) {
+      print('User alreay exists');
+    }
+
+    return null;
+
+    //notifyListeners();
   }
 
   List<String> getVaccines() {

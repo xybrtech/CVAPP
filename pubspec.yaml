@@ -33,6 +33,8 @@ dependencies:
   http: ^0.12.2
   provider: ^4.3.2+3
   shared_preferences: ^0.5.12+4
+  syncfusion_flutter_barcodes: ^18.1.42-beta
+  flutter_session: ^0.1.1
 
 
   # The following adds the Cupertino Icons font to your application.

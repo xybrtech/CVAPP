@@ -1,6 +1,8 @@
 import 'package:COVAPP/constants/theme.dart';
 import 'package:COVAPP/model/user.dart';
+import 'package:COVAPP/providers/auth.dart';
 import 'package:COVAPP/providers/authold.dart';
+import 'package:COVAPP/providers/users.dart';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -27,10 +29,16 @@ class _RegisterState extends State<Register> {
     _form.currentState.save();
     // print('User Data>>>>' + _user.firstname);
 
-    widget.setUser(_user);
-    Provider.of<Auth>(context, listen: false)
+    Provider.of<Users>(context, listen: false).addUser(_user).then((value) =>
+        Provider.of<Auth>(context, listen: false)
+            .login(_user)
+            .then((value) => widget.setUser(_user)));
+
+    // widget.setUser(_user);
+
+    /*  Provider.of<Auth>(context, listen: false)
         .login(_user)
-        .then((value) => widget.setUser(_user));
+        .then((value) => widget.setUser(_user)); */
   }
 
   @override
@@ -99,6 +107,13 @@ class _RegisterState extends State<Register> {
                                 ? null
                                 : "Please enter a valid email",
                           ) */
+                                onSaved: (value) {
+                                  _user = User(
+                                      pK: _user.pK,
+                                      firstname: _user.firstname,
+                                      lastname: _user.lastname,
+                                      email: value);
+                                },
                               ),
                               Container(
                                 padding:

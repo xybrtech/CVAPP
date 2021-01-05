@@ -57,15 +57,15 @@ class VaccineItemSW extends StatelessWidget {
       },
       child: Card(
         margin: EdgeInsets.symmetric(
-          horizontal: 15,
-          vertical: 4,
+          horizontal: 0,
+          vertical: 0,
         ),
         child: Padding(
           padding: EdgeInsets.all(8),
           child: ListTile(
             leading: CircleAvatar(
               child: Padding(
-                padding: EdgeInsets.all(5),
+                padding: EdgeInsets.all(1),
                 child: FittedBox(
                   child: Text('$maker'),
                 ),

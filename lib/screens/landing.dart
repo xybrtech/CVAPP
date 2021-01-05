@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:COVAPP/constants/theme.dart';
 import 'package:COVAPP/model/user.dart';
+import 'package:COVAPP/providers/auth.dart';
 
 import 'package:COVAPP/providers/authold.dart';
 import 'package:COVAPP/providers/session.dart';
@@ -64,7 +65,7 @@ class _LandingState extends State<Landing2> {
     setState(() {
       //isUserRegistered = false;
       _vtList.add(new VaccineItem(
-          id: '',
+          pk: '',
           maker: vac.maker,
 /* 
       _vaccine = new Vaccine(
@@ -120,7 +121,7 @@ class _LandingState extends State<Landing2> {
                                     ConnectionState.waiting
                                 ? (_vaccineinfoEntered
                                     ? History()
-                                    : CVForm(_saveVaccineInfo))
+                                    : CVForm(_saveVaccineInfo, ""))
                                 : Register(_saveForm))
                     //History()
 

@@ -58,7 +58,7 @@ class History extends StatelessWidget {
                               itemBuilder: (_, i) => Column(
                                 children: [
                                   VaccineItemSW(
-                                      vaccineData.items[i].id,
+                                      vaccineData.items[i].pk,
                                       vaccineData.items[i].maker,
                                       vaccineData.items[i].doseNum,
                                       DateFormat.yMMMMd('en_US').format(

@@ -28,3 +28,12 @@ class MaterialColors {
   static const Color socialTwitter = Color.fromRGBO(91, 192, 222, 1.0);
   static const Color socialDribbble = Color.fromRGBO(234, 76, 137, 1.0);
 }
+
+class Config {
+  static const String url =
+      'https://eox32nv7o5.execute-api.us-east-1.amazonaws.com/default/CVAPPApi';
+
+  static const String baseUrl =
+      'https://eox32nv7o5.execute-api.us-east-1.amazonaws.com';
+  static const String key = 'Z9whiUjQySnZgmeDCjsMCiKt3ZNAP74YB7RmU770';
+}

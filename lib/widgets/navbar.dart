@@ -224,6 +224,7 @@ class _NavbarState extends State<Navbar> {
                             new GestureDetector(
                               onTap: () {
                                 // Navigator.pushNamed(context, "/history");
+                                print('To navigate hiostory');
 
                                 widget.navigateHistory();
                               },

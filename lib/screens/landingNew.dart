@@ -10,7 +10,9 @@ import 'package:COVAPP/screens/register.dart';
 import 'package:COVAPP/widgets/navbar.dart';
 import 'package:COVAPP/widgets/sidemenu.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_session/flutter_session.dart';
 import 'package:provider/provider.dart';
+import './barcode.dart';
 
 import 'form.dart';
 
@@ -26,12 +28,17 @@ class _LandingState extends State<Landing> {
 
   bool _vaccineinfoEntered = false;
 
+  String _currentPage;
+
   String _firstName = '';
 
   String _lastName = '';
 
   bool _toHistoryPage = false;
   bool _toVaccineInfoPage = false;
+  bool _toBarCodePage = false;
+
+  String _emailId;
 
 /*   Vaccine _vaccine =
       new Vaccine(vaccineMaker: null, virus: null, vaccineItems: []); */
@@ -56,6 +63,7 @@ class _LandingState extends State<Landing> {
       //_result = result;
 
       print('Set state in save forms 222 >>  $isUserRegistered');
+      _emailId = usr.email;
       _firstName = usr.firstname;
       _lastName = usr.lastname;
       isUserRegistered = true;
@@ -72,6 +80,9 @@ class _LandingState extends State<Landing> {
       _toHistoryPage = true;
       _isHighlighted[1] = true;
       _isHighlighted[0] = false;
+      _toBarCodePage = false;
+
+      _currentPage = 'Vaccine History';
     });
   }
 
@@ -82,6 +93,23 @@ class _LandingState extends State<Landing> {
       _vaccineinfoEntered = false;
       _isHighlighted[0] = true;
       _isHighlighted[1] = false;
+      _toBarCodePage = false;
+
+      _currentPage = 'VaccineInfo';
+    });
+  }
+
+  void _navigateBarCode() {
+    print('Navigate barcode');
+    setState(() {
+      _toVaccineInfoPage = false;
+      _toHistoryPage = false;
+      _vaccineinfoEntered = false;
+      _isHighlighted[0] = false;
+      _isHighlighted[1] = false;
+      _toBarCodePage = true;
+
+      _currentPage = 'BarCode';
     });
   }
 
@@ -90,30 +118,40 @@ class _LandingState extends State<Landing> {
 
     //_vtList = Provider.of<VaccineItems>(context, listen: true).items;
 
-    setState(() {
-      //isUserRegistered = false;
+    Provider.of<VaccineItems>(context, listen: false)
+        .addVaccineInfo(vac)
+        .then((value) => setState(() {
+              //isUserRegistered = false;
 
-      print('Set state in save forms 222 >>  $isUserRegistered');
-      _vtList.add(new VaccineItem(
-          id: '',
-          maker: vac.maker,
-          doseNum: vac.doseNum,
-          vaccinatedDate: vac.vaccinatedDate));
+              print('Set state in save forms 222 >>  $isUserRegistered');
+              _vtList.add(new VaccineItem(
+                  pk: _emailId,
+                  maker: vac.maker,
+                  doseNum: vac.doseNum,
+                  vaccinatedDate: vac.vaccinatedDate));
 
-      //_vaccine = new Vaccine(
-      //  vaccineMaker: vac.maker, virus: 'COVID', vaccineItems: _vtList);
+              //_vaccine = new Vaccine(
+              //  vaccineMaker: vac.maker, virus: 'COVID', vaccineItems: _vtList);
 
-      _toHistoryPage = false;
-      _toVaccineInfoPage = false;
-      _vaccineinfoEntered = true;
-      _isHighlighted[1] = true;
-      _isHighlighted[0] = false;
-    });
+              _toHistoryPage = false;
+              _toVaccineInfoPage = false;
+              _vaccineinfoEntered = true;
+              _isHighlighted[1] = true;
+              _isHighlighted[0] = false;
+            }));
   }
 
   @override
   void initState() {
     // TODO: implement initState
+
+    FlutterSession().get("userData").then((extractedUserData) => {
+          setState(() {
+            _firstName = extractedUserData['firstName'];
+            _lastName = extractedUserData['lastName'];
+            _emailId = extractedUserData['userId'];
+          })
+        });
 
     _vaccineinfoEntered = false;
 
@@ -121,6 +159,7 @@ class _LandingState extends State<Landing> {
 
     _isHighlighted[0] = true;
     _isHighlighted[1] = false;
+    _currentPage = 'Home';
 
     super.initState();
   }
@@ -132,19 +171,16 @@ class _LandingState extends State<Landing> {
       providers: [
         ChangeNotifierProvider.value(
           value: Auth(),
-        ),
-        ChangeNotifierProvider.value(
-          value: VaccineItems(),
-        ),
+        )
       ],
       child: Consumer<Auth>(
         builder: (ctx, auth, _) => Scaffold(
             appBar: Navbar(
               bgColor: MaterialColors.primary,
-              title: "Home",
+              title: "CVAPP",
               searchBar: false,
               categoryOne: "Vaccine info",
-              categoryTwo: "Vaccine History",
+              categoryTwo: "History",
               isHighlighted: _isHighlighted,
               navigateHistory: _navigateHistory,
               navigateVaccineInfo: _navigateVaccineInfo,
@@ -152,33 +188,37 @@ class _LandingState extends State<Landing> {
             backgroundColor: MaterialColors.primary,
             // key: _scaffoldKey,
             drawer: SideMenu(
-              currentPage: "Home",
-              firstName: _firstName,
-              lastName: _lastName,
-            ),
+                currentPage: _currentPage,
+                firstName: _firstName,
+                lastName: _lastName,
+                navigateBarCode: _navigateBarCode),
             body: Container(
               color: MaterialColors.white,
               child: auth.isAuth
-                  ? _toVaccineInfoPage
-                      ? CVForm(_saveVaccineInfo)
-                      : _toHistoryPage
-                          ? History()
-                          : _vaccineinfoEntered
+                  ? _toBarCodePage
+                      ? Barcode()
+                      : _toVaccineInfoPage
+                          ? CVForm(_saveVaccineInfo, _emailId)
+                          : _toHistoryPage
                               ? History()
-                              : CVForm(_saveVaccineInfo)
+                              : _vaccineinfoEntered
+                                  ? History()
+                                  : CVForm(_saveVaccineInfo, _emailId)
                   : FutureBuilder(
                       future: auth.tryAutoLogin(),
-                      builder: (ctx, authResultSnapshot) =>
-                          authResultSnapshot.connectionState ==
-                                  ConnectionState.waiting
-                              ? _toVaccineInfoPage
-                                  ? CVForm(_saveVaccineInfo)
+                      builder: (ctx, authResultSnapshot) => authResultSnapshot
+                                  .connectionState ==
+                              ConnectionState.waiting
+                          ? _toBarCodePage
+                              ? Barcode()
+                              : _toVaccineInfoPage
+                                  ? CVForm(_saveVaccineInfo, _emailId)
                                   : _toHistoryPage
                                       ? History()
                                       : _vaccineinfoEntered
                                           ? History()
-                                          : CVForm(_saveVaccineInfo)
-                              : Register(_saveForm),
+                                          : CVForm(_saveVaccineInfo, _emailId)
+                          : Register(_saveForm),
                     ),
 
               /* routes: {

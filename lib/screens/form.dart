@@ -1,6 +1,8 @@
 import 'package:COVAPP/constants/theme.dart';
 import 'package:COVAPP/model/user.dart';
+import 'package:COVAPP/providers/users.dart';
 import 'package:COVAPP/providers/vaccineitem.dart';
+import 'package:provider/provider.dart';
 
 import '../providers/vaccineitems.dart';
 import 'package:checkbox_grouped/checkbox_grouped.dart';
@@ -13,8 +15,9 @@ class CVForm extends StatefulWidget {
   _FormState createState() => _FormState();
 
   final Function _saveVaccine;
+  final String _userID;
 
-  CVForm(this._saveVaccine);
+  CVForm(this._saveVaccine, this._userID);
 }
 
 class _FormState extends State<CVForm> {
@@ -30,20 +33,22 @@ class _FormState extends State<CVForm> {
   var _user = User(pK: null, firstname: '', lastname: '', email: '');
 
   var _vaccine = VaccineItem(
-      vaccinatedDate: DateTime.now(), maker: '', doseNum: 0, id: '');
+      vaccinatedDate: DateTime.now(), maker: '', doseNum: 0, pk: '');
 
   void _saveForm() {
     final isValid = _form.currentState.validate();
-
-    //Provider.of<Users>(context, listen: false).addUser();
-
+    // print("DoseNum " + widget._userID);
     print("DoseNum " + _vaccine.doseNum.toString());
     print("Maker " + _vaccine.maker);
-    print("DoseNum " + _vaccine.id);
+    print("DoseNum " + _vaccine.doseNum.toString());
     print("Date " + _vaccine.vaccinatedDate.toString());
 
-    widget._saveVaccine(_vaccine);
+    /*
 
+
+            */
+
+    widget._saveVaccine(_vaccine);
     if (!isValid) {
       return;
     }
@@ -109,9 +114,10 @@ class _FormState extends State<CVForm> {
                             popupItemDisabled: (String s) => s.startsWith('I'),
                             onChanged: (value) {
                               _vaccine = VaccineItem(
-                                  id: _vaccine.id,
+                                  pk: widget._userID,
                                   maker: value,
                                   doseNum: _vaccine.doseNum,
+                                  vialNum: _vaccine.vialNum,
                                   vaccinatedDate: _vaccine.vaccinatedDate);
                             },
                             selectedItem: "Pfizer",
@@ -126,12 +132,30 @@ class _FormState extends State<CVForm> {
                             multiSelection: false,
                             onItemSelected: (value) {
                               _vaccine = VaccineItem(
-                                  id: _vaccine.id,
+                                  pk: widget._userID,
                                   maker: _vaccine.maker,
                                   doseNum: value,
+                                  vialNum: _vaccine.vialNum,
                                   vaccinatedDate: _vaccine.vaccinatedDate);
                             },
                           ),
+
+                          TextFormField(
+                            decoration: const InputDecoration(
+                              hintText: 'Vaccine#',
+                              labelText: 'Vial #',
+                            ),
+                            onSaved: (String value) {
+                              _vaccine = VaccineItem(
+                                  pk: widget._userID,
+                                  maker: _vaccine.maker,
+                                  doseNum: _vaccine.doseNum,
+                                  vialNum: value,
+                                  vaccinatedDate: _vaccine.vaccinatedDate);
+                            },
+                          ),
+
+                          SizedBox(height: 10),
                           DateTimePicker(
                             type: DateTimePickerType.dateTimeSeparate,
                             dateMask: 'd MMM, yyyy',
@@ -151,12 +175,16 @@ class _FormState extends State<CVForm> {
                             },
                             onChanged: (val) {
                               _vaccine = VaccineItem(
-                                  id: _vaccine.id,
+                                  pk: widget._userID,
                                   maker: _vaccine.maker,
                                   doseNum: _vaccine.doseNum,
+                                  vialNum: _vaccine.vialNum,
                                   vaccinatedDate: DateTime.parse(val));
                             },
                           ),
+
+                          SizedBox(height: 30),
+
                           Row(
                             children: [
                               Checkbox(

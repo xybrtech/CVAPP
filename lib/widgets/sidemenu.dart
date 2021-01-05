@@ -1,5 +1,5 @@
 import 'package:COVAPP/constants/theme.dart';
-import 'package:COVAPP/providers/authold.dart';
+import 'package:COVAPP/providers/auth.dart';
 import 'package:COVAPP/widgets/sidemenutitle.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -8,8 +8,10 @@ class SideMenu extends StatelessWidget {
   final String currentPage;
   final String firstName;
   final String lastName;
+  final Function navigateBarCode;
 
-  SideMenu({this.currentPage, this.firstName, this.lastName});
+  SideMenu(
+      {this.currentPage, this.firstName, this.lastName, this.navigateBarCode});
 
   @override
   Widget build(BuildContext context) {
@@ -86,7 +88,7 @@ class SideMenu extends StatelessWidget {
                 iconColor: Colors.black,
                 title: "Home",
                 isSelected: currentPage == "Home" ? true : false),
-            SideMenuTile(
+            /*  SideMenuTile(
                 icon: Icons.addchart_sharp,
                 onTap: () {
                   if (currentPage != "VaccineHistory")
@@ -94,12 +96,14 @@ class SideMenu extends StatelessWidget {
                 },
                 iconColor: Colors.black,
                 title: "Vaccine History",
-                isSelected: currentPage == "VaccineHistory" ? true : false),
+                isSelected: currentPage == "VaccineHistory" ? true : false), */
             SideMenuTile(
                 icon: Icons.qr_code_scanner,
                 onTap: () {
                   if (currentPage != "BarCode")
-                    Navigator.pushReplacementNamed(context, '/BarCode');
+                    // Navigator.pushReplacementNamed(context, '/barcode');
+                    navigateBarCode();
+                  Navigator.pop(context);
                 },
                 iconColor: Colors.black,
                 title: "Bar Code",
