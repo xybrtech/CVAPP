@@ -1,4 +1,5 @@
 import 'package:COVAPP/model/user.dart';
+import 'package:COVAPP/providers/barcode.dart';
 import 'package:COVAPP/providers/users.dart';
 import 'package:COVAPP/screens/barcode.dart';
 
@@ -8,7 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'providers/auth.dart';
-import 'providers/authold.dart';
+
 import 'providers/vaccineitems.dart';
 import 'screens/history.dart';
 
@@ -38,6 +39,9 @@ class MyApp extends StatelessWidget {
         ),
         ChangeNotifierProvider.value(
           value: User(),
+        ),
+        ChangeNotifierProvider.value(
+          value: BarCodeData(),
         ),
       ],
       child: MaterialApp(

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
-class VaccineItem with ChangeNotifier {
+class VaccineItem {
   final String pk;
   final String maker;
-  final int doseNum;
+  final String doseNum;
   final DateTime vaccinatedDate;
   final String rtype;
   final String vialNum;

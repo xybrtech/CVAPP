@@ -27,49 +27,37 @@ class History extends StatelessWidget {
         body: Container(
           color: MaterialColors.white,
           padding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 16.0),
-          /*
-            child: Expanded(
-              child: ListView.builder(
-                itemCount: userVaccinehistory.length,
-                itemBuilder: (ctx, i) => VaccineItemSW(
-                  userVaccinehistory[i].id,
-                  userVaccinehistory[i].maker,
-                  userVaccinehistory[i].doseNum,
-                  (DateFormat.yMMMMd('en_US')
-                      .format(userVaccinehistory[i].vaccinatedDate)),
-                ),
-              ),
-            )) */
-
           child: FutureBuilder(
             future: _refreshHistory(context),
-            builder: (ctx, snapshot) =>
-                snapshot.connectionState == ConnectionState.waiting
-                    ? Center(
-                        child: CircularProgressIndicator(),
-                      )
-                    : RefreshIndicator(
-                        onRefresh: () => _refreshHistory(context),
-                        child: Consumer<VaccineItems>(
-                          builder: (ctx, vaccineData, _) => Padding(
-                            padding: EdgeInsets.all(8),
-                            child: ListView.builder(
-                              itemCount: vaccineData.items.length,
-                              itemBuilder: (_, i) => Column(
-                                children: [
-                                  VaccineItemSW(
-                                      vaccineData.items[i].pk,
-                                      vaccineData.items[i].maker,
-                                      vaccineData.items[i].doseNum,
-                                      DateFormat.yMMMMd('en_US').format(
-                                          vaccineData.items[i].vaccinatedDate)),
-                                  Divider(),
-                                ],
-                              ),
-                            ),
+            builder: (ctx, snapshot) => snapshot.connectionState ==
+                    ConnectionState.waiting
+                ? Center(
+                    child: CircularProgressIndicator(),
+                  )
+                : RefreshIndicator(
+                    onRefresh: () => _refreshHistory(context),
+                    child: Consumer<VaccineItems>(
+                      builder: (ctx, vaccineData, _) => Padding(
+                        padding: EdgeInsets.all(8),
+                        child: ListView.builder(
+                          itemCount: vaccineData.items.length,
+                          itemBuilder: (_, i) => Column(
+                            children: [
+                              VaccineItemSW(
+                                  vaccineData.items[i].pk,
+                                  vaccineData.items[i].maker,
+                                  vaccineData.items[i].doseNum,
+                                  vaccineData.items[i].vaccinatedDate != null
+                                      ? DateFormat.yMMMMd('en_US').format(
+                                          vaccineData.items[i].vaccinatedDate)
+                                      : ""),
+                              Divider(),
+                            ],
                           ),
                         ),
                       ),
+                    ),
+                  ),
           ),
         ));
   }

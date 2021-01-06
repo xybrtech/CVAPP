@@ -1,94 +1,71 @@
 import 'dart:convert';
+import 'dart:io';
+import 'package:flutter_session/flutter_session.dart';
+import 'package:http/http.dart' as http;
 
 import 'package:COVAPP/constants/theme.dart';
 import 'package:flutter/material.dart';
 
 import 'vaccineitem.dart';
-import 'package:http/http.dart' as http;
 
 class VaccineItems with ChangeNotifier {
   // ignore: empty_constructor_bodies
 
   List<VaccineItem> vaccineItems = [
     VaccineItem(
-        pk: 'p1', maker: 'Pfizer', doseNum: 2, vaccinatedDate: DateTime.now()),
+        pk: 'p1',
+        maker: 'Pfizer',
+        doseNum: "2",
+        vaccinatedDate: DateTime.now()),
     VaccineItem(
-        pk: 'p1', maker: 'Pfizer', doseNum: 2, vaccinatedDate: DateTime.now()),
-    VaccineItem(
-        pk: 'p1', maker: 'Pfizer', doseNum: 2, vaccinatedDate: DateTime.now()),
-    VaccineItem(
-        pk: 'p1', maker: 'Pfizer', doseNum: 2, vaccinatedDate: DateTime.now())
+        pk: 'p1', maker: 'Pfizer', doseNum: "2", vaccinatedDate: DateTime.now())
   ];
 
   List<VaccineItem> get items {
-    // if (_showFavoritesOnly) {
-    //   return _items.where((prodItem) => prodItem.isFavorite).toList();
-    // }
     return [...vaccineItems];
   }
 
   Future<void> fetchAndSetHistory([bool filterByUser = false]) async {
     try {
-//Fetch Data
-      var queryParameters = {
-        'TableName': 'one',
-        'pk': 'two',
-        'rtype': 'vaccine'
-      };
-      var uri = Uri.http(Config.url, '', queryParameters);
+      //Fetch Data
 
-      // final uri = Uri.parse(Config.url).replace(query: queryParameters;
-      var response = await http.get(uri, headers: {
+      dynamic extractedUserData = await FlutterSession().get("userData");
+
+      String emailId = extractedUserData['userId'];
+
+      var url =
+          Config.url + '?TableName=CVAPP&pk=' + emailId + '&rtype=vaccine';
+      const key = Config.key;
+
+      var res = await http.get(url, headers: {
         "x-api-key": Config.key,
         "Authorization": "Api Token",
         "CVAPPApi-Key": Config.key
       });
 
-      final extractedData = json.decode(response.body) as Map<String, dynamic>;
-      if (extractedData == null) {
-        return;
-      }
+      final extractedData = json.decode(res.body) as Map<String, dynamic>;
+      final List<VaccineItem> loadedProducts = [];
 
-      final List<VaccineItem> vaccineItems = [];
+      extractedData.forEach((key, value) {
+        if (key.isNotEmpty && key.contains('Items')) {
+          value.toList().forEach((element) => vaccineItems.add(VaccineItem(
+              pk: element["pk"],
+              maker: element["maker"],
+              doseNum: element["dose"],
+              vaccinatedDate: element["vaccinedate"] != null
+                  ? DateTime.tryParse(element["vaccinedate"])
+                  : null,
+              rtype: element["rtype"],
+              vialNum: element["vialno"],
+              virus: element["virus"])));
+        }
+      });
 
       notifyListeners();
     } catch (error) {
       throw (error);
     }
   }
-
-/* Future<void> fetchAndSetProducts([bool filterByUser = false]) async {
-    final filterString = filterByUser ? 'orderBy="creatorId"&equalTo="$userId"' : '';
-    var url =
-        'https://flutter-update.firebaseio.com/products.json?auth=$authToken&$filterString';
-    try {
-      final response = await http.get(url);
-      final extractedData = json.decode(response.body) as Map<String, dynamic>;
-      if (extractedData == null) {
-        return;
-      }
-      url =
-          'https://flutter-update.firebaseio.com/userFavorites/$userId.json?auth=$authToken';
-      final favoriteResponse = await http.get(url);
-      final favoriteData = json.decode(favoriteResponse.body);
-      final List<Product> loadedProducts = [];
-      extractedData.forEach((prodId, prodData) {
-        loadedProducts.add(Product(
-          id: prodId,
-          title: prodData['title'],
-          description: prodData['description'],
-          price: prodData['price'],
-          isFavorite:
-              favoriteData == null ? false : favoriteData[prodId] ?? false,
-          imageUrl: prodData['imageUrl'],
-        ));
-      });
-      _items = loadedProducts;
-      notifyListeners();
-    } catch (error) {
-      throw (error);
-    }
-  } */
 
   Future<String> addVaccineInfo(VaccineItem vac) async {
     const url = Config.url;
@@ -105,21 +82,23 @@ class VaccineItems with ChangeNotifier {
             "TableName": "CVAPP",
             "Item": {
               "pk": vac.pk,
-              "rtype": "vaccine" + vac.vaccinatedDate.toString(),
+              "rtype": 'vaccine-' + vac.maker + '-' + vac.doseNum.toString(),
               "dose": vac.doseNum,
               "maker": vac.maker,
               "vialno": vac.vialNum,
-              "virus": "COVID"
+              "virus": "COVID",
+              "vaccinedate": vac.vaccinatedDate.toString()
             }
           }));
 
       if (res.statusCode != 200) {
-        print('User already exists');
+        print('Error updating vaccine Info error code ' +
+            res.statusCode.toString());
       }
 
       return res.statusCode.toString();
-    } catch (_) {
-      print('User alreay exists');
+    } catch (e) {
+      print('Error saving to DB' + e.toString());
     }
 
     return null;

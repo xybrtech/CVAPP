@@ -4,12 +4,6 @@ import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
 import 'input.dart';
 
-// import 'package:material_kit_flutter/screens/categories.dart';
-// import 'package:material_kit_flutter/screens/best-deals.dart';
-// import 'package:material_kit_flutter/screens/search.dart';
-// import 'package:material_kit_flutter/screens/cart.dart';
-// import 'package:material_kit_flutter/screens/chat.dart';
-
 class Navbar extends StatefulWidget implements PreferredSizeWidget {
   final String title;
   final String categoryOne;

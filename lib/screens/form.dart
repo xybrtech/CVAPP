@@ -33,7 +33,7 @@ class _FormState extends State<CVForm> {
   var _user = User(pK: null, firstname: '', lastname: '', email: '');
 
   var _vaccine = VaccineItem(
-      vaccinatedDate: DateTime.now(), maker: '', doseNum: 0, pk: '');
+      vaccinatedDate: DateTime.now(), maker: '', doseNum: '0', pk: '');
 
   void _saveForm() {
     final isValid = _form.currentState.validate();

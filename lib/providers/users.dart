@@ -12,6 +12,17 @@ class Users with ChangeNotifier {
     const key = Config.key;
 
     try {
+      const url2 =
+          Config.url + '?TableName=CVAPP&pk=chal@gmailcom&rtype=vaccine';
+
+      http.Response res2 = await http.get(
+        url2,
+        headers: {"x-api-key": key, "CVAPPApi-Key": key},
+      );
+      if (res2.statusCode != 200) {
+        print('User already ekjkjhkjhkxists');
+      }
+
       http.Response res = await http.post(url,
           headers: {
             "x-api-key": key,
