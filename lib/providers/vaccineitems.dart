@@ -11,18 +11,10 @@ import 'vaccineitem.dart';
 class VaccineItems with ChangeNotifier {
   // ignore: empty_constructor_bodies
 
-  List<VaccineItem> vaccineItems = [
-    VaccineItem(
-        pk: 'p1',
-        maker: 'Pfizer',
-        doseNum: "2",
-        vaccinatedDate: DateTime.now()),
-    VaccineItem(
-        pk: 'p1', maker: 'Pfizer', doseNum: "2", vaccinatedDate: DateTime.now())
-  ];
+  List<VaccineItem> _items = [];
 
   List<VaccineItem> get items {
-    return [...vaccineItems];
+    return [..._items];
   }
 
   Future<void> fetchAndSetHistory([bool filterByUser = false]) async {
@@ -48,7 +40,7 @@ class VaccineItems with ChangeNotifier {
 
       extractedData.forEach((key, value) {
         if (key.isNotEmpty && key.contains('Items')) {
-          value.toList().forEach((element) => vaccineItems.add(VaccineItem(
+          value.toList().forEach((element) => loadedProducts.add(VaccineItem(
               pk: element["pk"],
               maker: element["maker"],
               doseNum: element["dose"],
@@ -60,6 +52,8 @@ class VaccineItems with ChangeNotifier {
               virus: element["virus"])));
         }
       });
+
+      _items = loadedProducts;
 
       notifyListeners();
     } catch (error) {

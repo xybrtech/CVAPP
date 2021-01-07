@@ -46,7 +46,7 @@ class History extends StatelessWidget {
                               VaccineItemSW(
                                   vaccineData.items[i].pk,
                                   vaccineData.items[i].maker,
-                                  vaccineData.items[i].doseNum,
+                                  vaccineData.items[i].doseNum.toString(),
                                   vaccineData.items[i].vaccinatedDate != null
                                       ? DateFormat.yMMMMd('en_US').format(
                                           vaccineData.items[i].vaccinatedDate)

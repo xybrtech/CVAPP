@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class VaccineItem {
   final String pk;
   final String maker;
-  final String doseNum;
+  final int doseNum;
   final DateTime vaccinatedDate;
   final String rtype;
   final String vialNum;

@@ -1,3 +1,4 @@
+import 'package:COVAPP/constants/theme.dart';
 import 'package:flutter/material.dart';
 
 class VaccineItemSW extends StatelessWidget {
@@ -7,6 +8,14 @@ class VaccineItemSW extends StatelessWidget {
   final String vaccinatedDate;
 
   VaccineItemSW(this.id, this.maker, this.doseNum, this.vaccinatedDate);
+
+  Color getColor(maker) {
+    if (maker.toString().contains('Pfizer')) return MaterialColors.primary;
+    if (maker.toString().contains('Moderna')) return Colors.blueGrey;
+    if (maker.toString().contains('Glaxosmithkline')) return Colors.blueAccent;
+    if (maker.toString().contains('AstraZeneca')) return Colors.indigo;
+    if (maker.toString().contains('Novavax')) return Colors.blueAccent;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -64,10 +73,12 @@ class VaccineItemSW extends StatelessWidget {
           padding: EdgeInsets.all(8),
           child: ListTile(
             leading: CircleAvatar(
+              backgroundColor: getColor('$maker'),
+              foregroundColor: MaterialColors.white,
               child: Padding(
                 padding: EdgeInsets.all(1),
                 child: FittedBox(
-                  child: Text('$maker'),
+                  child: Text('${maker[0]}'),
                 ),
               ),
             ),

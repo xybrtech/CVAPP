@@ -39,11 +39,15 @@ class Barcode extends StatelessWidget {
                         child: Consumer<BarCodeData>(
                             builder: (ctx, barCodedata, _) => Padding(
                                 padding: EdgeInsets.all(8),
-                                child: SfBarcodeGenerator(
-                                  value: 'www.pavanguduru.com',
-                                  symbology: QRCode(),
-                                  showValue: false,
-                                )))),
+                                child: GestureDetector(
+                                    onScaleStart: (ScaleStartDetails details) {
+                                      print('Scale');
+                                    },
+                                    child: SfBarcodeGenerator(
+                                      value: 'www.pavanguduru.com',
+                                      symbology: QRCode(),
+                                      showValue: false,
+                                    ))))),
           ),
         ),
       ),
