@@ -1,13 +1,17 @@
-import 'package:COVAPP/constants/theme.dart';
+import 'package:CVAPP/providers/vaccineitems.dart';
+import 'package:CVAPP/constants/theme.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class VaccineItemSW extends StatelessWidget {
   final String id;
   final String maker;
   final String doseNum;
   final String vaccinatedDate;
+  final String rtype;
 
-  VaccineItemSW(this.id, this.maker, this.doseNum, this.vaccinatedDate);
+  VaccineItemSW(
+      this.id, this.rtype, this.maker, this.doseNum, this.vaccinatedDate);
 
   Color getColor(maker) {
     if (maker.toString().contains('Pfizer')) return MaterialColors.primary;
@@ -62,7 +66,7 @@ class VaccineItemSW extends StatelessWidget {
         );
       },
       onDismissed: (direction) {
-        // Provider.of<VaccineItem>(context, listen: false).removeItem(id);
+        Provider.of<VaccineItems>(context, listen: false).removeItem(id, rtype);
       },
       child: Card(
         margin: EdgeInsets.symmetric(
@@ -82,10 +86,13 @@ class VaccineItemSW extends StatelessWidget {
                 ),
               ),
             ),
-            //title: Text(maker),
-
-            // subtitle: Text('Dose#: ${(doseNum)}'),
-            trailing: Text('Dose#: ${(doseNum)} $vaccinatedDate'),
+            title: Text(
+              maker,
+              softWrap: true,
+              overflow: TextOverflow.fade,
+            ),
+            subtitle: Text('Dose#: ${(doseNum)}'),
+            trailing: Text('$vaccinatedDate'),
           ),
         ),
       ),

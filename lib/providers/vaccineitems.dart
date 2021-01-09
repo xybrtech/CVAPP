@@ -1,9 +1,10 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:CVAPP/constants/theme.dart';
 import 'package:flutter_session/flutter_session.dart';
 import 'package:http/http.dart' as http;
 
-import 'package:COVAPP/constants/theme.dart';
+import 'package:CVAPP/constants/theme.dart';
 import 'package:flutter/material.dart';
 
 import 'vaccineitem.dart';
@@ -98,5 +99,25 @@ class VaccineItems with ChangeNotifier {
     return null;
 
     //notifyListeners();
+  }
+
+  Future<String> removeItem(id, rtype) async {
+    /*  http.Response res = await http.delete(Config.url,
+          headers: {
+            "x-api-key": Config.key,
+            "Authorization": "Api Token",
+            "CVAPPApi-Key": Config.key
+          },
+          body: json.encode({
+            "TableName": "CVAPP",
+            "Item": {
+              "pk": user.email,
+              "rtype": "User",
+              "firstName": user.firstname,
+              "lastName": user.lastname
+            }
+          })); */
+
+    return null;
   }
 }

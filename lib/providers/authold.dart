@@ -1,9 +1,9 @@
 import 'dart:convert';
 import 'dart:async';
 
-import 'package:COVAPP/model/http_exception.dart';
-import 'package:COVAPP/model/user.dart';
-import 'package:COVAPP/providers/session.dart';
+import 'package:CVAPP/model/http_exception.dart';
+import 'package:CVAPP/model/user.dart';
+import 'package:CVAPP/providers/session.dart';
 import 'package:flutter/widgets.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';

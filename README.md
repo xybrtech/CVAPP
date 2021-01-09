@@ -1,4 +1,4 @@
-# COVAPP
+# CVAPP
 
 A new Flutter project.
 

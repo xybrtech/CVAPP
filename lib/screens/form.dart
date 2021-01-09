@@ -1,14 +1,13 @@
-import 'package:COVAPP/constants/theme.dart';
-import 'package:COVAPP/model/user.dart';
-import 'package:COVAPP/providers/users.dart';
-import 'package:COVAPP/providers/vaccineitem.dart';
-import 'package:provider/provider.dart';
+import 'dart:convert';
 
-import '../providers/vaccineitems.dart';
+import 'package:CVAPP/constants/theme.dart';
+import 'package:CVAPP/model/user.dart';
+import 'package:CVAPP/providers/vaccineitem.dart';
 import 'package:checkbox_grouped/checkbox_grouped.dart';
 import 'package:date_time_picker/date_time_picker.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 
 class CVForm extends StatefulWidget {
   @override
@@ -22,6 +21,7 @@ class CVForm extends StatefulWidget {
 
 class _FormState extends State<CVForm> {
   final _form = GlobalKey<FormState>();
+  List<String> _vaccineList = ['-Select-'];
 
   final _lastnameFocusNode = FocusNode();
   final _emailFocusNode = FocusNode();
@@ -53,6 +53,27 @@ class _FormState extends State<CVForm> {
       return;
     }
   }
+
+  Future<dynamic> getVaccineList() async {
+    var url = Config.url + '?TableName=CVAPP&pk=vaccinelist&rtype=dropdown';
+    const key = Config.key;
+
+    var res = await http.get(url, headers: {
+      "x-api-key": Config.key,
+      "Authorization": "Api Token",
+      "CVAPPApi-Key": Config.key
+    });
+
+    List<String> loadedProducts = [];
+
+    final extractedData = json.decode(res.body) as Map<String, dynamic>;
+
+    List items = extractedData['Items'];
+
+    items.toList().forEach((element) => loadedProducts.add(element['name']));
+    return loadedProducts;
+  }
+
 /* 
   void _addNewVaccine(String txTitle, double txAmount, DateTime chosenDate) {
     final newTx = Vaccine(
@@ -70,6 +91,10 @@ class _FormState extends State<CVForm> {
   @override
   void initState() {
     //_imageUrlFocusNode.addListener(_updateImageUrl);
+    this.getVaccineList().then((value) => setState(() {
+          _vaccineList = value as List<String>;
+        }));
+
     super.initState();
   }
 
@@ -99,18 +124,13 @@ class _FormState extends State<CVForm> {
                             // child: Text('Vaccine Maker'),
                           ) */
                           DropdownSearch<String>(
-                            mode: Mode.MENU,
-                            showSelectedItem: true,
-                            items: [
-                              "Pfizer",
-                              "Moderna",
-                              "Glaxosmithkline (Disabled)",
-                              "Merck (Disabled)",
-                              'AstraZeneca (Disabled)',
-                              'Novavax (Disabled)'
-                            ],
+                            mode: Mode.BOTTOM_SHEET,
+
+                            showSelectedItem: false,
+                            items: _vaccineList,
                             label: "Vaccine Maker",
                             hint: "Pharma Company",
+
                             popupItemDisabled: (String s) =>
                                 s.contains('Disabled'),
                             onChanged: (value) {
@@ -121,7 +141,7 @@ class _FormState extends State<CVForm> {
                                   vialNum: _vaccine.vialNum,
                                   vaccinatedDate: _vaccine.vaccinatedDate);
                             },
-                            selectedItem: "Pfizer",
+                            //selectedItem: "Pfizer",
                           ),
 
                           SimpleGroupedCheckbox<int>(

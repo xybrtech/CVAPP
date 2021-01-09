@@ -1,4 +1,4 @@
-import 'package:COVAPP/constants/theme.dart';
+import 'package:CVAPP/constants/theme.dart';
 import 'package:flutter/material.dart';
 
 class SideMenuTile extends StatelessWidget {

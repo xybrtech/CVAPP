@@ -1,4 +1,4 @@
-import 'package:COVAPP/constants/theme.dart';
+import 'package:CVAPP/constants/theme.dart';
 import 'package:flutter/material.dart';
 
 class Splash extends StatelessWidget {
@@ -24,7 +24,7 @@ class Splash extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     Padding(
-                      padding: const EdgeInsets.only(right: 48.0),
+                      padding: const EdgeInsets.only(right: 36.0),
                       child: Text.rich(TextSpan(
                         text: "CVAPP",
                         style:
@@ -32,7 +32,7 @@ class Splash extends StatelessWidget {
                       )),
                     ),
                     Padding(
-                      padding: const EdgeInsets.only(top: 24.0),
+                      padding: const EdgeInsets.only(top: 14.0),
                       child: Text("Vaccine Tracker APP",
                           style: TextStyle(
                             color: MaterialColors.info,

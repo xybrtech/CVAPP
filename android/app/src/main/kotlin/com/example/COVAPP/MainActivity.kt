@@ -1,4 +1,4 @@
-package com.example.COVAPP
+package com.example.CVAPP
 
 import io.flutter.embedding.android.FlutterActivity
 

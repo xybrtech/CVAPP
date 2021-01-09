@@ -1,7 +1,7 @@
 import 'dart:convert';
 
-import 'package:COVAPP/constants/theme.dart';
-import 'package:COVAPP/model/user.dart';
+import 'package:CVAPP/constants/theme.dart';
+import 'package:CVAPP/model/user.dart';
 import 'package:flutter/material.dart';
 
 import 'package:http/http.dart' as http;

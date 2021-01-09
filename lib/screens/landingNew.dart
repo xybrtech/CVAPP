@@ -1,14 +1,14 @@
-import 'package:COVAPP/constants/theme.dart';
-import 'package:COVAPP/model/user.dart';
+import 'package:CVAPP/constants/theme.dart';
+import 'package:CVAPP/model/user.dart';
 
-import 'package:COVAPP/providers/auth.dart';
-import 'package:COVAPP/providers/vaccineitem.dart';
-import 'package:COVAPP/providers/vaccineitems.dart';
+import 'package:CVAPP/providers/auth.dart';
+import 'package:CVAPP/providers/vaccineitem.dart';
+import 'package:CVAPP/providers/vaccineitems.dart';
 
-import 'package:COVAPP/screens/history.dart';
-import 'package:COVAPP/screens/register.dart';
-import 'package:COVAPP/widgets/navbar.dart';
-import 'package:COVAPP/widgets/sidemenu.dart';
+import 'package:CVAPP/screens/history.dart';
+import 'package:CVAPP/screens/register.dart';
+import 'package:CVAPP/widgets/navbar.dart';
+import 'package:CVAPP/widgets/sidemenu.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_session/flutter_session.dart';
 import 'package:provider/provider.dart';

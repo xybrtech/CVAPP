@@ -1,10 +1,10 @@
-import 'package:COVAPP/model/user.dart';
-import 'package:COVAPP/providers/barcode.dart';
-import 'package:COVAPP/providers/users.dart';
-import 'package:COVAPP/screens/barcode.dart';
+import 'package:CVAPP/model/user.dart';
+import 'package:CVAPP/providers/barcode.dart';
+import 'package:CVAPP/providers/users.dart';
+import 'package:CVAPP/screens/barcode.dart';
 
-import 'package:COVAPP/screens/landingNew.dart';
-import 'package:COVAPP/screens/splash.dart';
+import 'package:CVAPP/screens/landingNew.dart';
+import 'package:CVAPP/screens/splash.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -45,7 +45,7 @@ class MyApp extends StatelessWidget {
         ),
       ],
       child: MaterialApp(
-        title: 'COVAPP',
+        title: 'CVAPP',
         initialRoute: "/splash",
         debugShowCheckedModeBanner: false,
         routes: <String, WidgetBuilder>{

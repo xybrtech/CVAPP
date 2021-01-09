@@ -1,9 +1,9 @@
-import 'package:COVAPP/constants/theme.dart';
+import 'package:CVAPP/constants/theme.dart';
 
-import 'package:COVAPP/providers/vaccineitems.dart';
+import 'package:CVAPP/providers/vaccineitems.dart';
 
-import 'package:COVAPP/widgets/sidemenu.dart';
-import 'package:COVAPP/widgets/vaccine_item.dart';
+import 'package:CVAPP/widgets/sidemenu.dart';
+import 'package:CVAPP/widgets/vaccine_item.dart';
 import 'package:date_time_picker/date_time_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -45,6 +45,7 @@ class History extends StatelessWidget {
                             children: [
                               VaccineItemSW(
                                   vaccineData.items[i].pk,
+                                  vaccineData.items[i].rtype,
                                   vaccineData.items[i].maker,
                                   vaccineData.items[i].doseNum.toString(),
                                   vaccineData.items[i].vaccinatedDate != null

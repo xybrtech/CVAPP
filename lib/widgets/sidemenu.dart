@@ -1,6 +1,6 @@
-import 'package:COVAPP/constants/theme.dart';
-import 'package:COVAPP/providers/auth.dart';
-import 'package:COVAPP/widgets/sidemenutitle.dart';
+import 'package:CVAPP/constants/theme.dart';
+import 'package:CVAPP/providers/auth.dart';
+import 'package:CVAPP/widgets/sidemenutitle.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -27,9 +27,20 @@ class SideMenu extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 CircleAvatar(
-                    //  backgroundImage: NetworkImage(
-                    //   "https://pixabay.com/images/id-3637425/?fit=crop&w=840&q=80"),
+                  backgroundColor: MaterialColors.white,
+                  foregroundColor: MaterialColors.primary,
+                  child: Padding(
+                    padding: EdgeInsets.all(1),
+                    child: FittedBox(
+                      child: Text(((firstName != null && firstName.isNotEmpty
+                              ? '${firstName[0]}'
+                              : '') +
+                          ((lastName != null && lastName.isNotEmpty)
+                              ? ('${lastName[0]}').toUpperCase()
+                              : ''))),
                     ),
+                  ),
+                ),
                 Padding(
                   padding: const EdgeInsets.only(bottom: 8.0, top: 16.0),
                   child: Text('$firstName $lastName',
