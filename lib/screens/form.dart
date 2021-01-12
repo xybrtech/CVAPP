@@ -37,16 +37,6 @@ class _FormState extends State<CVForm> {
 
   void _saveForm() {
     final isValid = _form.currentState.validate();
-    // print("DoseNum " + widget._userID);
-    print("DoseNum " + _vaccine.doseNum.toString());
-    print("Maker " + _vaccine.maker);
-    print("DoseNum " + _vaccine.doseNum.toString());
-    print("Date " + _vaccine.vaccinatedDate.toString());
-
-    /*
-
-
-            */
 
     widget._saveVaccine(_vaccine);
     if (!isValid) {
@@ -73,20 +63,6 @@ class _FormState extends State<CVForm> {
     items.toList().forEach((element) => loadedProducts.add(element['name']));
     return loadedProducts;
   }
-
-/* 
-  void _addNewVaccine(String txTitle, double txAmount, DateTime chosenDate) {
-    final newTx = Vaccine(
-      vaccineMaker: txTitle,
-       virus: 'COVID',
-      : chosenDate,
-      id: DateTime.now().toString(),
-    );
-
-    setState(() {
-      _userTransactions.add(newTx);
-    });
-  } */
 
   @override
   void initState() {

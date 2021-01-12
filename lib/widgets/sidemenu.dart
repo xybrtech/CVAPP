@@ -124,7 +124,7 @@ class SideMenu extends StatelessWidget {
                 onTap: () async {
                   // Navigator.of(context).pop();
                   //if (currentPage != "signout")
-                  print('Hello logout');
+                  //print('Hello logout');
                   // Navigator.of(context)
                   //     .pushReplacementNamed(UserProductsScreen.routeName);
                   // await Provider.of<Auth>(context, listen: false).logout();

@@ -30,10 +30,18 @@ class MaterialColors {
 }
 
 class Config {
-  static const String url =
-      'https://eox32nv7o5.execute-api.us-east-1.amazonaws.com/default/CVAPPApi';
-
+  //static const String url =
+  //  'https://eox32nv7o5.execute-api.us-east-1.amazonaws.com/default/CVAPPApi';
+/*
   static const String baseUrl =
       'https://eox32nv7o5.execute-api.us-east-1.amazonaws.com';
-  static const String key = 'Z9whiUjQySnZgmeDCjsMCiKt3ZNAP74YB7RmU770';
+  static const String key = 'Z9whiUjQySnZgmeDCjsMCiKt3ZNAP74YB7RmU770'; */
+
+  static const String url =
+      'https://0h612ghlo3.execute-api.us-east-1.amazonaws.com/default/CVAPPApi';
+
+  static const String key = 'PcxMk8HXwW6RiM9M7KP5t2Yolz22kh514VGeutgx';
+
+  static const String baseUrl =
+      'https://0h612ghlo3.execute-api.us-east-1.amazonaws.com';
 }

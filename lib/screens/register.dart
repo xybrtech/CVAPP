@@ -3,6 +3,7 @@ import 'package:CVAPP/model/user.dart';
 import 'package:CVAPP/providers/auth.dart';
 import 'package:CVAPP/providers/authold.dart';
 import 'package:CVAPP/providers/users.dart';
+import 'package:email_validator/email_validator.dart';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -25,20 +26,29 @@ class _RegisterState extends State<Register> {
 
   final _emailFocusNode = FocusNode();
 
-  void _submitData() {
-    _form.currentState.save();
-    // print('User Data>>>>' + _user.firstname);
+  final _buttonFocusNode = FocusNode();
 
+  void _submitData() {
+    final isValid = _form.currentState.validate();
+    if (!isValid) {
+      return;
+    }
+
+    _form.currentState.save();
     Provider.of<Users>(context, listen: false).addUser(_user).then((value) =>
         Provider.of<Auth>(context, listen: false)
             .login(_user)
             .then((value) => widget.setUser(_user)));
+  }
 
-    // widget.setUser(_user);
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    _lastnameFocusNode.dispose();
+    _emailFocusNode.dispose();
+    _buttonFocusNode.dispose();
 
-    /*  Provider.of<Auth>(context, listen: false)
-        .login(_user)
-        .then((value) => widget.setUser(_user)); */
+    super.dispose();
   }
 
   @override
@@ -92,7 +102,6 @@ class _RegisterState extends State<Register> {
                                       .requestFocus(_emailFocusNode);
                                 },
                                 onSaved: (value) {
-                                  print('Hello Pavan FName >.' + value);
                                   _user = User(
                                       pK: _user.pK,
                                       firstname: _user.firstname,
@@ -103,10 +112,17 @@ class _RegisterState extends State<Register> {
                               TextFormField(
                                 decoration: InputDecoration(labelText: 'Email'),
                                 focusNode: _emailFocusNode,
-                                /* validator: (value) => EmailValidator.validate(value)
-                                ? null
-                                : "Please enter a valid email",
-                          ) */
+                                validator: (value) {
+                                  if (value.isEmpty) {
+                                    return 'Please enter your email';
+                                  }
+
+                                  if (!EmailValidator.validate(
+                                      value, false, true)) {
+                                    return "Please enter a valid email";
+                                  }
+                                  return null;
+                                },
                                 onSaved: (value) {
                                   _user = User(
                                       pK: _user.pK,

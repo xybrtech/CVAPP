@@ -62,13 +62,10 @@ class _LandingState extends State<Landing> {
     setState(() {
       //_result = result;
 
-      print('Set state in save forms 222 >>  $isUserRegistered');
       _emailId = usr.email;
       _firstName = usr.firstname;
       _lastName = usr.lastname;
       isUserRegistered = true;
-      print('FirstName' + _firstName);
-      print('FirstName' + _lastName);
     });
     //});
   }
@@ -132,11 +129,12 @@ class _LandingState extends State<Landing> {
 
               //_vaccine = new Vaccine(
               //  vaccineMaker: vac.maker, virus: 'COVID', vaccineItems: _vtList);
-
+              _toBarCodePage = true;
               _toHistoryPage = false;
               _toVaccineInfoPage = false;
               _vaccineinfoEntered = true;
-              _isHighlighted[1] = true;
+
+              _isHighlighted[1] = false;
               _isHighlighted[0] = false;
             }));
   }
@@ -208,18 +206,21 @@ class _LandingState extends State<Landing> {
                       future: auth.tryAutoLogin(),
                       builder: (ctx, authResultSnapshot) => authResultSnapshot
                                   .connectionState ==
-                              ConnectionState.waiting
-                          ? _toBarCodePage
-                              ? Barcode()
-                              : _toVaccineInfoPage
-                                  ? CVForm(_saveVaccineInfo, _emailId)
-                                  : _toHistoryPage
-                                      ? History()
-                                      : _vaccineinfoEntered
+                              ConnectionState.done
+                          ? authResultSnapshot.hasData &&
+                                  authResultSnapshot.data
+                              ? _toBarCodePage
+                                  ? Barcode()
+                                  : _toVaccineInfoPage
+                                      ? CVForm(_saveVaccineInfo, _emailId)
+                                      : _toHistoryPage
                                           ? History()
-                                          : CVForm(_saveVaccineInfo, _emailId)
-                          : Register(_saveForm),
-                    ),
+                                          : _vaccineinfoEntered
+                                              ? History()
+                                              : CVForm(
+                                                  _saveVaccineInfo, _emailId)
+                              : Register(_saveForm)
+                          : CircularProgressIndicator()),
 
               /* routes: {
             ProductDetailScreen.routeName: (ctx) => ProductDetailScreen(),

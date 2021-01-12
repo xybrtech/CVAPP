@@ -36,7 +36,8 @@ class _BarcodeState extends State<Barcode> {
       ),
       body: Center(
         child: Container(
-          height: 200,
+          height: 300,
+          width: 300,
           child: FutureBuilder(
             future: _refreshHistory(context),
             builder: (ctx, snapshot) =>
@@ -77,10 +78,19 @@ class _BarcodeState extends State<Barcode> {
                                               (ScaleStartDetails details) {
                                             print('Scale');
                                           },
-                                          child: SfBarcodeGenerator(
-                                            value: "wwww.darrylbrown.com Data: "+barCodedata.barCodeData,
-                                            symbology: QRCode(),
-                                            showValue: false,
+                                          child: InteractiveViewer(
+                                            panEnabled:
+                                                false, // Set it to false to prevent panning.
+                                            boundaryMargin: EdgeInsets.all(80),
+                                            minScale: 0.5,
+                                            maxScale: 4,
+                                            child: SfBarcodeGenerator(
+                                              value:
+                                                  "wwww.darrylbrown.com Data: " +
+                                                      barCodedata.barCodeData,
+                                              symbology: QRCode(),
+                                              showValue: false,
+                                            ),
                                           )))),
                             ),
                           ),
