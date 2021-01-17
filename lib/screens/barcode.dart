@@ -1,12 +1,10 @@
 import 'package:CVAPP/constants/theme.dart';
 import 'package:CVAPP/providers/barcode.dart';
-import 'package:CVAPP/providers/barcode.dart';
-import 'package:CVAPP/providers/barcode.dart';
 
 import 'package:CVAPP/widgets/sidemenu.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:syncfusion_flutter_barcodes/barcodes.dart';
+import 'package:qr_flutter/qr_flutter.dart';
 import 'package:vector_math/vector_math_64.dart' show Vector3;
 
 class Barcode extends StatefulWidget {
@@ -29,11 +27,7 @@ class _BarcodeState extends State<Barcode> {
       backgroundColor: MaterialColors.bgColorScreen,
       // key: _scaffoldKey,
       //drawer: MaterialDrawerC(currentPage: "Home"),
-      drawer: SideMenu(
-        currentPage: "BarCode",
-        firstName: 'Pavan',
-        lastName: 'Guduru',
-      ),
+      drawer: SideMenu(currentPage: "BarCode"),
       body: Center(
         child: Container(
           height: 300,
@@ -84,13 +78,19 @@ class _BarcodeState extends State<Barcode> {
                                             boundaryMargin: EdgeInsets.all(80),
                                             minScale: 0.5,
                                             maxScale: 4,
-                                            child: SfBarcodeGenerator(
+                                            child: QrImage(
+                                              data: barCodedata.barCodeData,
+                                              // size: 899,
+                                            )
+
+                                            /* SfBarcodeGenerator(
                                               value:
                                                   "wwww.darrylbrown.com Data: " +
                                                       barCodedata.barCodeData,
                                               symbology: QRCode(),
                                               showValue: false,
-                                            ),
+                                            ) */
+                                            ,
                                           )))),
                             ),
                           ),

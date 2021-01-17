@@ -1,5 +1,5 @@
 name: CVAPP
-description: A new Flutter project.
+description: CVAPP by Darryl Brown
 
 # The following line prevents the package from being accidentally published to
 # pub.dev using `pub publish`. This is preferred for private packages.
@@ -35,6 +35,7 @@ dependencies:
   shared_preferences: ^0.5.12+4
   syncfusion_flutter_barcodes: ^18.1.42-beta
   flutter_session: ^0.1.1
+  qr_flutter: ^3.1.0
 
 
 

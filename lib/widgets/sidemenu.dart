@@ -33,7 +33,7 @@ class SideMenu extends StatelessWidget {
                     padding: EdgeInsets.all(1),
                     child: FittedBox(
                       child: Text(((firstName != null && firstName.isNotEmpty
-                              ? '${firstName[0]}'
+                              ? ('${firstName[0]}').toUpperCase()
                               : '') +
                           ((lastName != null && lastName.isNotEmpty)
                               ? ('${lastName[0]}').toUpperCase()

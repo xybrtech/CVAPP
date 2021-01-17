@@ -1,7 +1,6 @@
 import 'package:CVAPP/constants/theme.dart';
 import 'package:CVAPP/model/user.dart';
 import 'package:CVAPP/providers/auth.dart';
-import 'package:CVAPP/providers/authold.dart';
 import 'package:CVAPP/providers/users.dart';
 import 'package:email_validator/email_validator.dart';
 

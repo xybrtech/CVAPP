@@ -1,7 +1,6 @@
 import 'dart:convert';
 
-import 'package:CVAPP/constants/theme.dart';
-import 'package:CVAPP/providers/vaccineitem.dart';
+import 'package:CVAPP/constants/config.dart';
 import 'package:date_time_picker/date_time_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_session/flutter_session.dart';
@@ -51,21 +50,29 @@ class BarCodeData with ChangeNotifier {
 
       extractedData.forEach((key, value) {
         if (key.isNotEmpty && key.contains('Items')) {
-          value.toList().forEach((element) => loadedVaccines.add('Vaccine Maker :' +
-              element['maker'] +
-              ' Dose:' +
-              element['dose'].toString() +
-              ' Date :' +
-              (element["vaccinedate"] != null ? '' : '') +
-              ' Vial# :' +
-              (element['vialno'] != null ? element['vialno'] : '')));
+          value.toList().forEach((element) => loadedVaccines.add(
+              'Vaccine Maker :' +
+                  element['maker'] +
+                  ' Dose:' +
+                  element['dose'].toString() +
+                  ' Date :' +
+                  (element["vaccinedate"] != null
+                      ? DateFormat.yMMMMd('en_US')
+                          .format(DateTime.parse(element["vaccinedate"]))
+                      : '') +
+                  ' Vial# :' +
+                  (element['vialno'] != null ? element['vialno'] : '')));
 
           // barcodeString.
           //virus: element["virus"])));
         }
       });
-      _barcodeString = loadedVaccines.join("|");
-      print(loadedVaccines.join("|"));
+      _barcodeString = extractedUserData['firstName'].toString().toUpperCase() +
+          " " +
+          extractedUserData['lastName'].toString().toUpperCase() +
+          ':' +
+          loadedVaccines.join("|");
+
       notifyListeners();
     } catch (error) {
       throw (error);

@@ -1,7 +1,5 @@
-import 'package:CVAPP/providers/vaccineitems.dart';
 import 'package:CVAPP/constants/theme.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 class VaccineItemSW extends StatelessWidget {
   final String id;
@@ -23,9 +21,11 @@ class VaccineItemSW extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Dismissible(
-      key: ValueKey(id),
-      background: Container(
+    return
+        // Dismissible(
+        // key: ValueKey(id),
+        // background:
+        /* Container(
         color: Theme.of(context).errorColor,
         child: Icon(
           Icons.delete,
@@ -38,8 +38,8 @@ class VaccineItemSW extends StatelessWidget {
           horizontal: 15,
           vertical: 4,
         ),
-      ),
-      direction: DismissDirection.endToStart,
+      ), */
+/*       direction: DismissDirection.endToStart,
       confirmDismiss: (direction) {
         return showDialog(
           context: context,
@@ -67,35 +67,37 @@ class VaccineItemSW extends StatelessWidget {
       },
       onDismissed: (direction) {
         Provider.of<VaccineItems>(context, listen: false).removeItem(id, rtype);
-      },
-      child: Card(
-        margin: EdgeInsets.symmetric(
-          horizontal: 0,
-          vertical: 0,
-        ),
-        child: Padding(
-          padding: EdgeInsets.all(8),
-          child: ListTile(
-            leading: CircleAvatar(
-              backgroundColor: getColor('$maker'),
-              foregroundColor: MaterialColors.white,
-              child: Padding(
-                padding: EdgeInsets.all(1),
-                child: FittedBox(
-                  child: Text('${maker[0]}'),
-                ),
+      }, */
+        Container(
+            child: Card(
+      margin: EdgeInsets.symmetric(
+        horizontal: 0,
+        vertical: 0,
+      ),
+      child: Padding(
+        padding: EdgeInsets.all(8),
+        child: ListTile(
+          trailing: CircleAvatar(
+            backgroundColor: getColor('$maker'),
+            foregroundColor: MaterialColors.white,
+            child: Padding(
+              padding: EdgeInsets.all(1),
+              child: FittedBox(
+                child: Text('${maker[0]}'),
               ),
             ),
-            title: Text(
-              maker,
-              softWrap: true,
-              overflow: TextOverflow.fade,
-            ),
-            subtitle: Text('Dose#: ${(doseNum)}'),
-            trailing: Text('$vaccinatedDate'),
           ),
+          title: Text(
+            maker,
+            softWrap: true,
+            overflow: TextOverflow.fade,
+          ),
+          subtitle: Text('Dose#: ${(doseNum)} \n$vaccinatedDate'),
+          isThreeLine: true,
+          //trailing: Text('$vaccinatedDate'),
         ),
       ),
-    );
+    ));
+    //);
   }
 }

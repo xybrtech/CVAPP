@@ -13,6 +13,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_session/flutter_session.dart';
 import 'package:provider/provider.dart';
 import './barcode.dart';
+import '../providers/string_extension.dart';
 
 import 'form.dart';
 
@@ -187,8 +188,8 @@ class _LandingState extends State<Landing> {
             // key: _scaffoldKey,
             drawer: SideMenu(
                 currentPage: _currentPage,
-                firstName: _firstName,
-                lastName: _lastName,
+                firstName: _firstName.capitalize(),
+                lastName: _lastName.capitalize(),
                 navigateBarCode: _navigateBarCode),
             body: Container(
               color: MaterialColors.white,

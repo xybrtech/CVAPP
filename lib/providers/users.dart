@@ -20,7 +20,7 @@ class Users with ChangeNotifier {
         headers: {"x-api-key": key, "CVAPPApi-Key": key},
       );
       if (res2.statusCode != 200) {
-        print('User already ekjkjhkjhkxists');
+        print('User already exists');
       }
 
       http.Response res = await http.post(url,
@@ -34,8 +34,8 @@ class Users with ChangeNotifier {
             "Item": {
               "pk": user.email,
               "rtype": "User",
-              "firstName": user.firstname,
-              "lastName": user.lastname
+              "firstName": user.firstname.toLowerCase(),
+              "lastName": user.lastname.toLowerCase()
             }
           }));
 
@@ -61,4 +61,10 @@ class Users with ChangeNotifier {
   //  new User(pK: 'Guduru', firstname: 'Pavan', lastname: 'Guduru');
 
   notifyListeners();
+}
+
+extension StringExtension on String {
+  String capitalize() {
+    return "${this[0].toUpperCase()}${this.substring(1)}";
+  }
 }
